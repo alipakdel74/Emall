@@ -1,0 +1,98 @@
+package com.majazeh.emall.data.api
+
+import com.majazeh.emall.data.api.response.Explode
+import com.majazeh.emall.data.api.response.Login
+import com.majazeh.emall.data.api.response.Logout
+import com.majazeh.emall.data.api.response.ProductData
+import retrofit2.Response
+import retrofit2.http.*
+
+interface DataApi {
+
+    @FormUrlEncoded
+    @POST("login")
+    suspend fun login(
+        @Field("username") number: String,
+        @Field("password") password: String
+    ): Response<Login>
+
+    @GET("explode")
+    suspend fun explode(@Header("Authorization") Authorization: String): Response<Explode>
+
+    @GET("products")
+    suspend fun products(
+        @Header("Authorization") Authorization: String,
+        @Query("page") page: Int,
+        @Query("q") q: String,
+        @Query("category") category: Int,
+        @Query("brand") brand: String
+    ): Response<ProductData>
+
+    @GET("logout")
+    suspend fun logOut(@Header("Authorization") Authorization: String): Response<Logout>
+
+//    @FormUrlEncoded
+//    @POST("cart/close")
+//    suspend fun closeCart(
+//        @Header("Authorization") Authorization: String,
+//        @Field("location") location: String
+//    ): Response<ResponseBody>
+
+//    @FormUrlEncoded
+//    @POST("register")
+//    suspend fun signUp(
+//        @Field("name") name: String,
+//        @Field("number") number: String,
+//        @Field("email") email: String,
+//        @Field("password") password: String
+//    ): Response<ResponseBody>
+//
+//    @FormUrlEncoded
+//    @POST("me")
+//    suspend fun editProfile(
+//        @Header("Authorization") Authorization: String,
+//        @Field("name") name: String,
+//        @Field("number") number: String,
+//        @Field("email") email: String,
+//        @Field("address") address: String,
+//        @Field("password") password: String
+//    ): Response<ResponseBody>
+//
+
+//    @FormUrlEncoded
+//    @POST("cart/details")
+//    suspend fun addCart(
+//        @Header("Authorization") Authorization: String,
+//        @Field("product_id") product_id: String,
+//        @Field("count") count: String
+//    ): Response<ResponseBody>
+//
+//    @DELETE("cart/details/{id}")
+//    suspend fun deleteCart(
+//        @Header("Authorization") Authorization: String,
+//        @Path("id") id: String
+//    ): Response<ResponseBody>
+//
+
+//
+//    @GET("invoices/{invoice_id}")
+//    suspend fun invoiceDetailShow(
+//        @Header("Authorization") Authorization: String,
+//        @Path("invoice_id") invoice_id: String
+//    ): Response<ResponseBody>
+//
+//    @GET("invoices")
+//    suspend fun invoices(
+//        @Header("Authorization") Authorization: String,
+//        @Query("page") page: Int
+//    ): Response<ResponseBody>
+//
+//    @FormUrlEncoded
+//    @POST("requests")
+//    suspend fun requests(
+//        @Header("Authorization") Authorization: String,
+//        @Field("title") title: String,
+//        @Field("description") description: String
+//    ): Response<ResponseBody>
+
+}
