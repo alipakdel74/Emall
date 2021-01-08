@@ -37,6 +37,9 @@ class MainActivity : BindingActivity<MainBinding>() {
                 R.id.nav_user -> {
                     startActivity(Intent(this, LoginActivity::class.java))
                 }
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                }
                 R.id.nav_Content -> {
 
                 }
@@ -64,10 +67,12 @@ class MainActivity : BindingActivity<MainBinding>() {
                 binding.navView.menu.findItem(R.id.nav_user).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_invoice).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_exit).isVisible = true
+                binding.navView.menu.findItem(R.id.nav_profile).isVisible = true
             } else {
                 binding.navView.menu.findItem(R.id.nav_user).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_invoice).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_exit).isVisible = false
+                binding.navView.menu.findItem(R.id.nav_profile).isVisible = false
             }
         })
         vm.me.observe(this, {
@@ -92,7 +97,7 @@ class MainActivity : BindingActivity<MainBinding>() {
         })
 
         vm.posCategory.observe(this, {
-            binding.appBarMain.viewpager.setCurrentItem(it,false)
+            binding.appBarMain.viewpager.setCurrentItem(it, false)
         })
 
         vm.isLoading.observe(this, {
@@ -101,8 +106,8 @@ class MainActivity : BindingActivity<MainBinding>() {
             else progressDialog.dismiss()
         })
 
-        vm.logout.observe(this,{
-            if (it.is_ok){
+        vm.responseApi.observe(this, {
+            if (it.is_ok) {
                 AppPreferences.auth = ""
                 startActivity(Intent(this, LoginActivity::class.java))
             }

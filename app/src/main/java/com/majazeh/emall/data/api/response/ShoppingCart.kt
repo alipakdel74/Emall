@@ -11,7 +11,7 @@ data class ShoppingCart(
     @SerializedName("status") val status: String?,
     @SerializedName("products") val products: Int,
     @SerializedName("total") val total: Int,
-    @SerializedName("location") val location: Any?,
+    @SerializedName("location") val location: String?,
     @SerializedName("address") val address: String?,
     @SerializedName("details") val details: MutableList<Product>,
 )

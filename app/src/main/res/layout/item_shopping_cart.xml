@@ -18,13 +18,9 @@
         android:id="@+id/cardShopping"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="0dp"
-        app:cardMaxElevation="0dp"
-        app:cardUseCompatPadding="false">
+        app:cardCornerRadius="16dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -32,9 +28,11 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivShopping"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:imageUrl="@{item.imageUrl.original}"
+                android:layout_width="120dp"
+                android:layout_height="0dp"
+                android:padding="4dp"
+                android:scaleType="centerCrop"
+                app:imageUrl='@{item.imageUrl.original != null ? item.imageUrl.original: ""}'
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -59,7 +57,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> vm.closeCart()}"
+                android:onClick="@{() -> vm.closeCart(item.id)}"
                 android:padding="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -71,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:padding="8dp"
+                android:text='@{item.quota+"تعداد "}'
                 android:textColor="@color/medium"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toStartOf="@+id/ivShopping"

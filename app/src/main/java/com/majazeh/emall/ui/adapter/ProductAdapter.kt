@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ali74.libkot.BindingViewHolder
 import com.majazeh.emall.R
@@ -32,20 +33,42 @@ class ProductAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ProductHolder) {
             holder.binding.item = models[position]
+            holder.itemView.setOnClickListener {
+                holder.itemView.context.startActivity(
+                    Intent(
+                        holder.itemView.context,
+                        DetailActivity::class.java
+                    ).putExtra("data", models[position])
+                )
+            }
         }
 
         if (holder is ShoppingCartHolder) {
             holder.binding.item = models[position]
             holder.binding.vm = vm
-        }
 
-        holder.itemView.setOnClickListener {
-            holder.itemView.context.startActivity(
-                Intent(
-                    holder.itemView.context,
-                    DetailActivity::class.java
-                ).putExtra("data", models[position])
-            )
+            if (position % 2 == 1)
+                holder.binding.cardShopping.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        holder.itemView.context,
+                        R.color.white
+                    )
+                )
+            else
+                holder.binding.cardShopping.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        holder.itemView.context,
+                        R.color.backgroundLightColor
+                    )
+                )
+//            holder.itemView.setOnClickListener {
+//                holder.itemView.context.startActivity(
+//                    Intent(
+//                        holder.itemView.context,
+//                        DetailActivity::class.java
+//                    ).putExtra("data", models[position])
+//                )
+//            }
         }
     }
 

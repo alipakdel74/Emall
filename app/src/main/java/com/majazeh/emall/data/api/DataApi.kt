@@ -2,7 +2,7 @@ package com.majazeh.emall.data.api
 
 import com.majazeh.emall.data.api.response.Explode
 import com.majazeh.emall.data.api.response.Login
-import com.majazeh.emall.data.api.response.Logout
+import com.majazeh.emall.data.api.response.ResponseApi
 import com.majazeh.emall.data.api.response.ProductData
 import retrofit2.Response
 import retrofit2.http.*
@@ -29,57 +29,49 @@ interface DataApi {
     ): Response<ProductData>
 
     @GET("logout")
-    suspend fun logOut(@Header("Authorization") Authorization: String): Response<Logout>
+    suspend fun logOut(@Header("Authorization") Authorization: String): Response<ResponseApi>
 
-//    @FormUrlEncoded
-//    @POST("cart/close")
-//    suspend fun closeCart(
-//        @Header("Authorization") Authorization: String,
-//        @Field("location") location: String
-//    ): Response<ResponseBody>
+    @FormUrlEncoded
+    @POST("me")
+    suspend fun editProfile(
+        @Header("Authorization") Authorization: String,
+        @Field("name") name: String,
+        @Field("number") number: String,
+        @Field("email") email: String,
+        @Field("address") address: String,
+        @Field("password") password: String
+    ): Response<ResponseApi>
 
-//    @FormUrlEncoded
-//    @POST("register")
-//    suspend fun signUp(
-//        @Field("name") name: String,
-//        @Field("number") number: String,
-//        @Field("email") email: String,
-//        @Field("password") password: String
-//    ): Response<ResponseBody>
-//
-//    @FormUrlEncoded
-//    @POST("me")
-//    suspend fun editProfile(
-//        @Header("Authorization") Authorization: String,
-//        @Field("name") name: String,
-//        @Field("number") number: String,
-//        @Field("email") email: String,
-//        @Field("address") address: String,
-//        @Field("password") password: String
-//    ): Response<ResponseBody>
-//
+    @FormUrlEncoded
+    @POST("register")
+    suspend fun signUp(
+        @Field("name") name: String,
+        @Field("number") number: String,
+        @Field("email") email: String,
+        @Field("password") password: String
+    ): Response<Login>
 
-//    @FormUrlEncoded
-//    @POST("cart/details")
-//    suspend fun addCart(
-//        @Header("Authorization") Authorization: String,
-//        @Field("product_id") product_id: String,
-//        @Field("count") count: String
-//    ): Response<ResponseBody>
-//
-//    @DELETE("cart/details/{id}")
-//    suspend fun deleteCart(
-//        @Header("Authorization") Authorization: String,
-//        @Path("id") id: String
-//    ): Response<ResponseBody>
-//
+    @FormUrlEncoded
+    @POST("cart/details")
+    suspend fun addCart(
+        @Header("Authorization") Authorization: String,
+        @Field("product_id") product_id: String,
+        @Field("count") count: String
+    ): Response<ResponseApi>
 
-//
-//    @GET("invoices/{invoice_id}")
-//    suspend fun invoiceDetailShow(
-//        @Header("Authorization") Authorization: String,
-//        @Path("invoice_id") invoice_id: String
-//    ): Response<ResponseBody>
+    @DELETE("cart/details/{id}")
+    suspend fun deleteCart(
+        @Header("Authorization") Authorization: String,
+        @Path("id") id: String
+    ): Response<ResponseApi>
+
+    @FormUrlEncoded
+    @POST("cart/close")
+    suspend fun closeCart(
+        @Header("Authorization") Authorization: String,
+        @Field("location") location: String
+    ): Response<ResponseApi>
+
 //
 //    @GET("invoices")
 //    suspend fun invoices(
@@ -87,6 +79,13 @@ interface DataApi {
 //        @Query("page") page: Int
 //    ): Response<ResponseBody>
 //
+//    @GET("invoices/{invoice_id}")
+//    suspend fun invoiceDetailShow(
+//        @Header("Authorization") Authorization: String,
+//        @Path("invoice_id") invoice_id: String
+//    ): Response<ResponseBody>
+//
+
 //    @FormUrlEncoded
 //    @POST("requests")
 //    suspend fun requests(

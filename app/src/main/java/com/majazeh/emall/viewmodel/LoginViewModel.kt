@@ -18,13 +18,13 @@ class LoginViewModel(private val repo: LoginRepository) : BaseViewModel() {
     private val _dataLogin = MutableLiveData<Boolean>()
     val dataLogin: LiveData<Boolean> = _dataLogin
 
+    val mName = ObservableField<String>()
     val mUsername = ObservableField<String>()
     val mPassword = ObservableField<String>()
 
     private val data = ExplodeSingleton.getInstance()
 
     fun login() {
-
         val username = mUsername.get() ?: ""
         val password = mPassword.get() ?: ""
 
@@ -45,6 +45,50 @@ class LoginViewModel(private val repo: LoginRepository) : BaseViewModel() {
         launch {
             val res = withContext(Dispatchers.IO) {
                 repo.login(username, password)
+            }
+
+            when (res.status) {
+                BaseResult.Status.ERROR -> _message.value = res.message!!
+                BaseResult.Status.SUCCESS -> {
+                    res.data?.apply {
+                        if (isOk) {
+                            AppPreferences.auth = "Bearer " + data.token
+                            getExplode()
+                        } else
+                            _message.value = messageText
+                    }
+                }
+            }
+        }
+        _loading.value = false
+    }
+
+    fun register(){
+        val name = mName.get() ?: ""
+        val username = mUsername.get() ?: ""
+        val password = mPassword.get() ?: ""
+
+        if (name.isEmpty()) {
+            _message.value = "أدخل اسم"
+            return
+        }
+        if (username.isEmpty()) {
+            _message.value = "أدخل رقم هاتفك المحمول"
+            return
+        }
+        if (!formatMobile(username)) {
+            _message.value = "تم إدخال رقم الهاتف المحمول غير صحيح"
+            return
+        }
+        if (password.isEmpty()) {
+            _message.value = "ادخل رقمك السري"
+            return
+        }
+
+        _loading.value = true
+        launch {
+            val res = withContext(Dispatchers.IO) {
+                repo.register(name,username, password)
             }
 
             when (res.status) {

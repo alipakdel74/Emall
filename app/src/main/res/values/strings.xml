@@ -16,7 +16,8 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_user">تسجيل الدخول</string>
+    <string name="menu_user">دخول</string>
+    <string name="menu_profile">الملف الشخصي</string>
     <string name="menu_invoice">فاتورة</string>
     <string name="menu_info">معلومات</string>
     <string name="menu_content">المحتوى</string>

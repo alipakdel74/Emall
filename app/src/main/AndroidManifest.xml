@@ -19,7 +19,10 @@
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,UnusedAttribute"
         tools:replace="android:supportsRtl">
-        <activity android:name=".ui.activity.InvoiceActivity"></activity>
+        <activity android:name=".ui.activity.RegisterActivity"></activity>
+        <activity android:name=".ui.activity.EditProfileActivity" />
+        <activity android:name=".ui.activity.ProfileActivity" />
+        <activity android:name=".ui.activity.InvoiceActivity" />
         <activity android:name=".ui.activity.ShoppingCartActivity" />
         <activity android:name=".ui.activity.DetailActivity" />
         <activity

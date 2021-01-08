@@ -65,7 +65,7 @@
                     android:paddingBottom="8dp"
                     android:text="تعداد"
                     android:textColor="@color/medium"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -80,7 +80,7 @@
                     android:paddingBottom="8dp"
                     android:text="@{String.valueOf(cart.total)}"
                     android:textColor="@color/medium"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/txtTitleAmount"
@@ -108,7 +108,7 @@
                     android:paddingBottom="8dp"
                     android:text='@{cart.market_price+" دینار"}'
                     android:textColor="@color/medium"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/iv2"
                     app:layout_constraintTop_toTopOf="parent"
@@ -135,7 +135,7 @@
                     android:paddingBottom="8dp"
                     android:text='@{cart.emall_price+" دینار"}'
                     android:textColor="@color/green"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/iv1"

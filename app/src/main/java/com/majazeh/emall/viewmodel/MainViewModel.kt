@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ali74.libkot.core.BaseResult
 import com.ali74.libkot.core.BaseViewModel
 import com.majazeh.emall.data.api.response.Category
-import com.majazeh.emall.data.api.response.Logout
+import com.majazeh.emall.data.api.response.ResponseApi
 import com.majazeh.emall.data.api.response.ProductData
 import com.majazeh.emall.data.api.response.ProfileMe
 import com.majazeh.emall.pattern.ExplodeSingleton
@@ -31,8 +31,8 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
     private val _isLogin = MutableLiveData<Boolean>()
     val isLogin: LiveData<Boolean> = _isLogin
 
-    private val _logout = MutableLiveData<Logout>()
-    val logout: LiveData<Logout> = _logout
+    private val _logout = MutableLiveData<ResponseApi>()
+    val responseApi: LiveData<ResponseApi> = _logout
 
     private val data = ExplodeSingleton.getInstance()
 

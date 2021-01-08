@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activity.ProfileActivity">
+
+    <data class="ProfileBinding">
+
+        <variable
+            name="activity"
+            type="android.app.Activity" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="user"
+            type="com.majazeh.emall.data.api.response.ProfileMe" />
+
+        <variable
+            name="vm"
+            type="com.majazeh.emall.viewmodel.ProfileViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundLightColor">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:onClick="@{() -> activity.onBackPressed()}"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:onClick="@{() -> vm.logout()}"
+            android:padding="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_logout" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivUser"
+                    android:layout_width="0dp"
+                    android:layout_height="140dp"
+                    android:background="@color/backgroundLightColor"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_profile_user" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text='@{user.name != null ? user.name + " " + user.nikname : ""}'
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/ivUser" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:visibility="@{user.location == null ? View.INVISIBLE : View.VISIBLE}"
+                    app:cardCornerRadius="8dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtName"
+                    app:strokeColor="@color/primaryColor"
+                    app:strokeWidth="1dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="@{user.location}"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            app:layout_constraintTop_toBottomOf="@id/ivUser" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_location"
+                            app:tint="@color/black" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivMobile"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toEndOf="@id/txtMobile"
+                    app:layout_constraintStart_toStartOf="@id/txtMobile"
+                    app:layout_constraintTop_toBottomOf="@+id/cardLocation"
+                    app:srcCompat="@drawable/ic_mobile" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtMobile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@{user.username == null ? user.mobile : user.username}"
+                    android:textColor="@color/medium"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivMobile" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivEmail"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toEndOf="@id/txtEmail"
+                    app:layout_constraintStart_toStartOf="@id/txtEmail"
+                    app:layout_constraintTop_toBottomOf="@+id/cardLocation"
+                    app:srcCompat="@drawable/ic_email" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text='@{user.email == null ? "" : user.email}'
+                    android:textColor="@color/medium"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivEmail" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            app:backgroundTint="@color/primaryColor"
+            app:elevation="5dp"
+            app:layout_constraintBottom_toBottomOf="@id/card"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card"
+            app:srcCompat="@drawable/ic_edit"
+            app:tint="@color/white" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

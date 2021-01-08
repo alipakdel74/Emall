@@ -7,25 +7,37 @@ import android.text.method.PasswordTransformationMethod
 import androidx.core.widget.doOnTextChanged
 import com.ali74.libkot.BindingActivity
 import com.ali74.libkot.patternBuilder.SnackBarBuilder
-import com.ali74.libkot.utils.hideKeyboard
 import com.majazeh.emall.R
-import com.majazeh.emall.databinding.LoginBinding
-import com.majazeh.emall.viewmodel.LoginViewModel
+import com.majazeh.emall.databinding.EditProfileBinding
+import com.majazeh.emall.viewmodel.EditProfileViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LoginActivity : BindingActivity<LoginBinding>() {
+class EditProfileActivity : BindingActivity<EditProfileBinding>() {
 
-    private val vm by viewModel<LoginViewModel>()
+    private val vm by viewModel<EditProfileViewModel>()
 
-    override fun getLayoutResId(): Int = R.layout.activity_login
+    override fun getLayoutResId(): Int = R.layout.activity_edit_profile
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.activity = this
         binding.vm = vm
 
+        vm.me.observe(this, {
+            binding.user = it
+        })
+
+        binding.edtAddress.doOnTextChanged { text, _, _, _ ->
+            vm.mAddress.set(text.toString().trim())
+        }
+        binding.edtEmail.doOnTextChanged { text, _, _, _ ->
+            vm.mEmail.set(text.toString().trim())
+        }
         binding.edtMobileNumber.doOnTextChanged { text, _, _, _ ->
-            vm.mUsername.set(text.toString().trim())
+            vm.mNumber.set(text.toString().trim())
+        }
+        binding.edtName.doOnTextChanged { text, _, _, _ ->
+            vm.mName.set(text.toString().trim())
         }
         binding.edtPassword.doOnTextChanged { text, _, _, _ ->
             vm.mPassword.set(text.toString().trim())
@@ -48,25 +60,23 @@ class LoginActivity : BindingActivity<LoginBinding>() {
                 binding.edtPassword.setSelection(binding.edtPassword.text!!.length)
             }
         }
-        binding.txtSignUp.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
-        }
 
         vm.isLoading.observe(this, {
             if (it)
                 progressDialog.show()
             else progressDialog.dismiss()
         })
-        vm.dataLogin.observe(this, {
-            if (it) {
-                startActivity(Intent(this, MainActivity::class.java))
-                finishAffinity()
-            }
-        })
         vm.message.observe(this, {
-            hideKeyboard(this)
             SnackBarBuilder(it).show(this)
         })
+
+        vm.edit.observe(this, {
+            val intent = Intent()
+            intent.putExtra("EditUser", it)
+            setResult(RESULT_OK, intent)
+            finish()
+        })
+
     }
 
 }

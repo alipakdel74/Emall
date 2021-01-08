@@ -1,8 +1,6 @@
 package com.majazeh.emall.di
 
-import com.majazeh.emall.repository.LoginRepository
-import com.majazeh.emall.repository.MainRepository
-import com.majazeh.emall.repository.SplashRepository
+import com.majazeh.emall.repository.*
 import com.majazeh.emall.viewmodel.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -12,12 +10,19 @@ val viewModelModule = module {
     viewModel { SplashViewModel(get()) }
     viewModel { LoginViewModel(get()) }
     viewModel { MainViewModel(get()) }
-    viewModel { ShoppingCartViewModel() }
+    viewModel { ShoppingCartViewModel(get()) }
+    viewModel { ProfileViewModel(get()) }
+    viewModel { EditProfileViewModel(get()) }
+    viewModel { DetailViewModel(get()) }
 }
 
 val repositoryModule = module {
     single { SplashRepository(get()) }
     single { LoginRepository(get()) }
     single { MainRepository(get()) }
+    single { ProfileRepository(get()) }
+    single { ShoppingCartRepository(get(), get()) }
+    single { EditProfileRepository(get()) }
+    single { DetailRepository(get(), get()) }
 }
 

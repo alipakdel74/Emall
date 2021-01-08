@@ -8,6 +8,11 @@
         android:title=""
         app:actionLayout="@layout/menu_user" />
     <item
+        android:id="@+id/nav_profile"
+        android:title=""
+        android:visible="false"
+        app:actionLayout="@layout/menu_profile" />
+    <item
         android:id="@+id/nav_invoice"
         android:title=""
         android:visible="false"

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.ali74.libkot.BindingActivity
+import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.majazeh.emall.R
 import com.majazeh.emall.databinding.ShoppingCartBinding
 import com.majazeh.emall.model.ProductType
@@ -23,7 +24,24 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
 
         vm.cart.observe(this, {
             binding.cart = it
-//            binding.rclShopping.adapter = ProductAdapter(it.details, ProductType.SHOPPING, vm)
+            if (binding.rclShopping.adapter == null)
+                binding.rclShopping.adapter = ProductAdapter(it.details, ProductType.SHOPPING, vm)
+            else {
+                (binding.rclShopping.adapter as ProductAdapter).refresh(it.details)
+            }
+        })
+
+        vm.isLoading.observe(this, {
+            if (it)
+                progressDialog.show()
+            else progressDialog.dismiss()
+        })
+        vm.message.observe(this, {
+            SnackBarBuilder(it).show(this)
+        })
+        vm.closeCart.observe(this, {
+            if (it)
+                vm.shoppingCart()
         })
 
     }

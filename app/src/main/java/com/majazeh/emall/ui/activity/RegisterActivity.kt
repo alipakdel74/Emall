@@ -9,21 +9,24 @@ import com.ali74.libkot.BindingActivity
 import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.ali74.libkot.utils.hideKeyboard
 import com.majazeh.emall.R
-import com.majazeh.emall.databinding.LoginBinding
+import com.majazeh.emall.databinding.RegisterBinding
 import com.majazeh.emall.viewmodel.LoginViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LoginActivity : BindingActivity<LoginBinding>() {
+class RegisterActivity : BindingActivity<RegisterBinding>() {
 
     private val vm by viewModel<LoginViewModel>()
 
-    override fun getLayoutResId(): Int = R.layout.activity_login
+    override fun getLayoutResId(): Int = R.layout.activity_register
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.activity = this
         binding.vm = vm
 
+        binding.edtName.doOnTextChanged { text, _, _, _ ->
+            vm.mName.set(text.toString().trim())
+        }
         binding.edtMobileNumber.doOnTextChanged { text, _, _, _ ->
             vm.mUsername.set(text.toString().trim())
         }
@@ -48,10 +51,11 @@ class LoginActivity : BindingActivity<LoginBinding>() {
                 binding.edtPassword.setSelection(binding.edtPassword.text!!.length)
             }
         }
-        binding.txtSignUp.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
-        }
 
+        vm.message.observe(this, {
+            hideKeyboard(this)
+            SnackBarBuilder(it).show(this)
+        })
         vm.isLoading.observe(this, {
             if (it)
                 progressDialog.show()
@@ -62,10 +66,6 @@ class LoginActivity : BindingActivity<LoginBinding>() {
                 startActivity(Intent(this, MainActivity::class.java))
                 finishAffinity()
             }
-        })
-        vm.message.observe(this, {
-            hideKeyboard(this)
-            SnackBarBuilder(it).show(this)
         })
     }
 
