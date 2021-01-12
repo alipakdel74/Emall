@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text='@{user.name != null ? user.name + " " + user.nikname : ""}'
+                    android:text='@{user.name != null ? user.name : ""}'
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold"

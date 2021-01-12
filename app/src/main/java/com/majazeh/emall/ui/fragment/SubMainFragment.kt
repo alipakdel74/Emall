@@ -5,10 +5,10 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ali74.libkot.BindingFragment
+import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.ali74.libkot.recyclerview.EndlessRVScroll
 import com.majazeh.emall.R
 import com.majazeh.emall.databinding.SubMainBinding
-import com.majazeh.emall.model.ProductType
 import com.majazeh.emall.ui.adapter.ProductAdapter
 import com.majazeh.emall.viewmodel.MainViewModel
 import com.ogaclejapan.smarttablayout.utils.v4.Bundler
@@ -34,7 +34,7 @@ class SubMainFragment : BindingFragment<SubMainBinding>() {
         vm.productsData.observe(this, {
             if (pageaction == 1) {
                 if (binding.rclProduct.adapter == null) {
-                    adapter = ProductAdapter(it.data, ProductType.PRODUCT)
+                    adapter = ProductAdapter(it.data, vm)
                     binding.rclProduct.adapter = adapter
                 }
             } else {
@@ -62,6 +62,9 @@ class SubMainFragment : BindingFragment<SubMainBinding>() {
                 binding.prbLazyLoad.visibility = View.VISIBLE
             else
                 binding.prbLazyLoad.visibility = View.INVISIBLE
+        })
+        vm.message.observe(this, {
+            SnackBarBuilder(it).show(requireActivity())
         })
     }
 

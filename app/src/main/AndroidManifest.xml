@@ -19,7 +19,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,UnusedAttribute"
         tools:replace="android:supportsRtl">
-        <activity android:name=".ui.activity.RegisterActivity"></activity>
+        <activity android:name=".ui.activity.ContentActivity"></activity>
+        <activity android:name=".ui.activity.PreInvoiceActivity" />
+        <activity android:name=".ui.activity.RegisterActivity" />
         <activity android:name=".ui.activity.EditProfileActivity" />
         <activity android:name=".ui.activity.ProfileActivity" />
         <activity android:name=".ui.activity.InvoiceActivity" />
@@ -30,7 +32,6 @@
             android:theme="@style/Theme.Emall.NoActionBar" />
         <activity
             android:name=".ui.activity.MainActivity"
-            android:label="@string/title_activity_main"
             android:theme="@style/Theme.Emall.NoActionBar" />
         <activity android:name=".ui.activity.LoginActivity" />
         <activity android:name=".ui.activity.SplashActivity">

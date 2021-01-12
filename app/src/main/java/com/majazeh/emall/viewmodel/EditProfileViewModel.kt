@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ali74.libkot.core.BaseResult
 import com.ali74.libkot.core.BaseViewModel
 import com.ali74.libkot.utils.formatMobile
+import com.majazeh.emall.R
 import com.majazeh.emall.data.api.response.ProfileMe
 import com.majazeh.emall.pattern.ExplodeSingleton
 import com.majazeh.emall.repository.EditProfileRepository
@@ -18,8 +19,11 @@ class EditProfileViewModel(private val repo: EditProfileRepository) : BaseViewMo
     private val _me = MutableLiveData<ProfileMe>()
     val me: LiveData<ProfileMe> = _me
 
-    private val _edit = MutableLiveData<ProfileMe>()
-    val edit: LiveData<ProfileMe> = _edit
+    private val _toast = MutableLiveData<Int>()
+    val toast: LiveData<Int> = _toast
+
+    private val _edit = MutableLiveData<Boolean>()
+    val edit: LiveData<Boolean> = _edit
 
     val mName = ObservableField("")
     val mNumber = ObservableField("")
@@ -47,53 +51,41 @@ class EditProfileViewModel(private val repo: EditProfileRepository) : BaseViewMo
         val password = mPassword.get()
 
         if (name.isNullOrEmpty()) {
-            _message.value = ""
+            _toast.value = R.string.invalidName
             return
         }
         if (number.isNullOrEmpty()) {
-            _message.value = ""
+            _toast.value = R.string.invalidUsername
             return
         }
         if (!formatMobile(number)) {
-            _message.value = ""
+            _toast.value = R.string.invalidUsername
             return
         }
-        if (email.isNullOrEmpty()) {
-            _message.value = ""
+        if (!email.isNullOrEmpty() && !email.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+".toRegex())) {
+            _toast.value = R.string.invalidEmail
             return
         }
-        if (address.isNullOrEmpty()) {
-            _message.value = ""
+        if (!address.isNullOrEmpty() && address.length < 10) {
+            _toast.value = R.string.invalidAddress
             return
         }
         if (password.isNullOrEmpty()) {
-            _message.value = ""
+            _toast.value = R.string.invalidPassword
             return
         }
 
         _loading.value = true
         launch {
             val res = withContext(Dispatchers.IO) {
-                repo.edit(name, number, email, address, password)
+                repo.edit(name, number, email ?: "", address ?: "", password)
             }
             when (res.status) {
                 BaseResult.Status.ERROR -> _message.value = res.message!!
                 BaseResult.Status.SUCCESS -> res.data?.apply {
                     if (is_ok) {
-                        val profile = ProfileMe(
-                            data!!.explode!!.me!!.id,
-                            name,
-                            name,
-                            email,
-                            number,
-                            number,
-                            data.explode!!.me!!.avatar,
-                            "",
-                            "",
-                            address
-                        )
-                        _edit.value = profile
-                        setUser(profile)
+                        setUser(data)
+                        _edit.value = true
                     }
                     _message.value = message_text
                 }
@@ -105,9 +97,7 @@ class EditProfileViewModel(private val repo: EditProfileRepository) : BaseViewMo
     private fun setUser(profileMe: ProfileMe) {
         data?.apply {
             explode?.apply {
-                me?.apply {
-                    _me.value = profileMe
-                }
+                me = profileMe
             }
         }
     }

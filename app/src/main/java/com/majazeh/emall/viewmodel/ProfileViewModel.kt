@@ -22,17 +22,18 @@ class ProfileViewModel(private val repo: ProfileRepository) : BaseViewModel() {
     private val data = ExplodeSingleton.getInstance()
 
     init {
+        getUser()
+    }
+
+    fun getUser() {
         data?.apply {
             explode?.apply {
                 me?.apply {
-                    setUser(this)
+                    _me.value = this
                 }
             }
         }
-    }
 
-    fun setUser(profileMe: ProfileMe) {
-        _me.value = profileMe
     }
 
     fun logout() {

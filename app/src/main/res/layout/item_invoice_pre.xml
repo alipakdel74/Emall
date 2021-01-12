@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data class="ItemInvoicePreBinding">
+
+        <import type="android.view.View" />
+
+        <variable
+            name="position"
+            type="Integer" />
+
+        <variable
+            name="invoice"
+            type="com.majazeh.emall.data.api.response.PreInvoice" />
+
+        <variable
+            name="vm"
+            type="com.majazeh.emall.viewmodel.ShoppingCartViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="12dp"
+            app:cardBackgroundColor="@color/backgroundLightColor"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp"
+            app:contentPaddingBottom="4dp"
+            app:contentPaddingLeft="4dp"
+            app:contentPaddingRight="16dp"
+            app:contentPaddingTop="12dp"
+            app:layout_constraintEnd_toEndOf="@+id/txtNumber"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txtNumber">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constrainDescInvoice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text='@{"منتج : " + invoice.product.title + " " + invoice.product.unit + invoice.product.unit_type}'
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="منتج" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text='@{"تعداد : "+invoice.count+" عدد"}'
+                    android:textColor="@color/medium"
+                    android:textSize="13sp"
+                    app:layout_constraintEnd_toEndOf="@+id/txtTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/txtTitle"
+                    tools:text="تعداد" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtPriceMarket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text='@{String.valueOf(invoice.product.market_price)}'
+                    android:textColor="@color/red"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtAmount"
+                    tools:text="تخفیف" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtPriceEmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center"
+                    android:text='@{invoice.product.emall_price+" دینار"}'
+                    android:textColor="@color/green"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@+id/txtPriceMarket"
+                    app:layout_constraintTop_toBottomOf="@+id/txtAmount"
+                    tools:text="مجموع" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:text='@{invoice.total_emall_price+" دینار "}'
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/btnDelete"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/btnDelete"
+                    tools:text="تاریخ" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="حذف"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/medium"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_trash"
+                    app:iconGravity="end"
+                    android:onClick="@{() -> vm.closeCart(invoice.id)}"
+                    app:iconSize="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtPriceMarket"
+                    app:rippleColor="@color/white" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_id_invoice"
+            android:gravity="center"
+            android:text="@{String.valueOf(position+1)}"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.100"
+            tools:text="تسلسل" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

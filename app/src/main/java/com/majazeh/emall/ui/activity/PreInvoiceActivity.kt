@@ -7,34 +7,23 @@ import android.view.MenuItem
 import com.ali74.libkot.BindingActivity
 import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.majazeh.emall.R
-import com.majazeh.emall.databinding.ShoppingCartBinding
+import com.majazeh.emall.databinding.PreInvoiceBinding
 import com.majazeh.emall.model.CartType
 import com.majazeh.emall.ui.adapter.ShoppingCartAdapter
 import com.majazeh.emall.viewmodel.ShoppingCartViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
+class PreInvoiceActivity : BindingActivity<PreInvoiceBinding>() {
 
     private val vm by viewModel<ShoppingCartViewModel>()
 
-    override fun getLayoutResId(): Int = R.layout.activity_shopping_cart
+    private var changeData = false
+
+    override fun getLayoutResId(): Int = R.layout.activity_pre_invoice
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(binding.toolbar)
-
-        binding.btnConfirm.setOnClickListener {
-            startActivityForResult(Intent(this, PreInvoiceActivity::class.java),0)
-        }
-
-        vm.cart.observe(this, {
-            binding.cart = it
-            if (binding.rclShopping.adapter == null)
-                binding.rclShopping.adapter = ShoppingCartAdapter(it.details, vm, CartType.SHOPPING)
-            else {
-                (binding.rclShopping.adapter as ShoppingCartAdapter).refresh(it.details)
-            }
-        })
 
         vm.isLoading.observe(this, {
             if (it)
@@ -44,10 +33,22 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
         vm.message.observe(this, {
             SnackBarBuilder(it).show(this)
         })
-        vm.closeCart.observe(this, {
-            if (it)
-                vm.shoppingCart()
+
+        vm.cart.observe(this, {
+            binding.cart = it
+            if (binding.rclInvoice.adapter == null)
+                binding.rclInvoice.adapter = ShoppingCartAdapter(it.details, vm, CartType.INVOICE)
+            else {
+                (binding.rclInvoice.adapter as ShoppingCartAdapter).refresh(it.details)
+            }
         })
+        vm.closeCart.observe(this, {
+            if (it) {
+                vm.shoppingCart()
+                changeData = true
+            }
+        })
+
 
     }
 
@@ -59,17 +60,16 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_menu) {
-            finish()
+            onBackPressed()
             return true
         }
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK)
-            if (data!!.getBooleanExtra("changeData", false))
-                vm.shoppingCart()
+    override fun onBackPressed() {
+        val intent = Intent()
+        intent.putExtra("changeData",changeData)
+        setResult(RESULT_OK,intent)
+        finish()
     }
-
 }

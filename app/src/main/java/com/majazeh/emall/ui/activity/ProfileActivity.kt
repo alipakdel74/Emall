@@ -45,7 +45,9 @@ class ProfileActivity : BindingActivity<ProfileBinding>() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
-            vm.setUser(data!!.getParcelableExtra("EditUser")!!)
+            val editUser = data!!.getBooleanExtra("EditUser", false)
+            if (editUser)
+                vm.getUser()
         }
     }
 }

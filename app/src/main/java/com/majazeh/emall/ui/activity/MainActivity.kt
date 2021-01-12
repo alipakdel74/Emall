@@ -12,6 +12,7 @@ import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.majazeh.emall.R
 import com.majazeh.emall.databinding.MainBinding
 import com.majazeh.emall.ui.adapter.CategoryAdapter
+import com.majazeh.emall.ui.dialog.QuestionDialog
 import com.majazeh.emall.ui.fragment.MainFragment
 import com.majazeh.emall.utils.AppPreferences
 import com.majazeh.emall.utils.ViewPagerAdapter
@@ -21,6 +22,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : BindingActivity<MainBinding>() {
 
     private val vm by viewModel<MainViewModel>()
+
+    private val questionDialog by lazy { QuestionDialog(this) }
 
     override fun getLayoutResId(): Int = R.layout.activity_main
 
@@ -32,6 +35,12 @@ class MainActivity : BindingActivity<MainBinding>() {
             startActivity(Intent(this, ShoppingCartActivity::class.java))
         }
 
+        questionDialog.sendData(object : QuestionDialog.SendData {
+            override fun data(title: String, desc: String) {
+                vm.request(title, desc)
+            }
+        })
+
         binding.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_user -> {
@@ -41,13 +50,16 @@ class MainActivity : BindingActivity<MainBinding>() {
                     startActivity(Intent(this, ProfileActivity::class.java))
                 }
                 R.id.nav_Content -> {
-
+                    startActivity(Intent(this, ContentActivity::class.java))
                 }
                 R.id.nav_Intro -> {
                     startActivity(Intent(this, IntroActivity::class.java))
                 }
                 R.id.nav_invoice -> {
                     startActivity(Intent(this, InvoiceActivity::class.java))
+                }
+                R.id.nav_Question -> {
+                    questionDialog.show()
                 }
                 R.id.nav_exit -> {
                     SnackBarBuilder("هل تقوم بتسجيل الخروج من حسابك؟")
@@ -79,9 +91,14 @@ class MainActivity : BindingActivity<MainBinding>() {
             if (!it.name.isNullOrEmpty())
                 binding.navView.getHeaderView(0)
                     .findViewById<AppCompatTextView>(R.id.fullName).text =
-                    it.name.plus(" ").plus(it.nikname)
+                    it.name
             binding.navView.getHeaderView(0).findViewById<AppCompatTextView>(R.id.username).text =
                 it.mobile
+        })
+
+        vm.request.observe(this, {
+            if (it)
+                questionDialog.dismiss()
         })
 
         vm.categories.observe(this, {
@@ -134,6 +151,11 @@ class MainActivity : BindingActivity<MainBinding>() {
             return
         }
         super.onBackPressed()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        vm.getUser()
     }
 
 }

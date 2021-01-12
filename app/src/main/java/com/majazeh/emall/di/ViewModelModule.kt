@@ -14,15 +14,17 @@ val viewModelModule = module {
     viewModel { ProfileViewModel(get()) }
     viewModel { EditProfileViewModel(get()) }
     viewModel { DetailViewModel(get()) }
+    viewModel { InvoiceViewModel(get()) }
 }
 
 val repositoryModule = module {
     single { SplashRepository(get()) }
     single { LoginRepository(get()) }
-    single { MainRepository(get()) }
+    single { MainRepository(get(), get()) }
     single { ProfileRepository(get()) }
     single { ShoppingCartRepository(get(), get()) }
     single { EditProfileRepository(get()) }
     single { DetailRepository(get(), get()) }
+    single { InvoiceRepository(get()) }
 }
 

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activity.PreInvoiceActivity">
+
+    <data class="PreInvoiceBinding">
+
+        <variable
+            name="cart"
+            type="com.majazeh.emall.data.api.response.ShoppingCart" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.Emall.AppBarOverlay">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:contentInsetEnd="0dp"
+                app:contentInsetStart="0dp"
+                app:menu="@menu/main"
+                app:popupTheme="@style/Theme.Emall.PopupOverlay">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="48dp"
+                    android:gravity="center"
+                    android:text="@string/app_name"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rclInvoice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="3dp"
+            app:cardMaxElevation="3dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true"
+            app:layout_anchor="@id/rclInvoice"
+            app:layout_anchorGravity="bottom"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="4dp"
+                    android:paddingBottom="8dp"
+                    android:text='@{cart.emall_price+" دینار"}'
+                    android:textColor="@color/green"
+                    android:textSize="14sp"
+                    tools:text="500 دینار" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv1"
+                    android:layout_width="0.7dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/medium" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtBasePrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="4dp"
+                    android:paddingBottom="8dp"
+                    android:text='@{cart.market_price+" دینار"}'
+                    android:textColor="@color/medium"
+                    android:textSize="14sp"
+                    tools:text="500 دینار" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv2"
+                    android:layout_width="0.7dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/medium" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="4dp"
+                    android:paddingBottom="8dp"
+                    android:text="@{String.valueOf(cart.products)}"
+                    android:textColor="@color/medium"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="245" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtTitleAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="4dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/amount"
+                    android:textColor="@color/medium"
+                    android:textSize="12sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

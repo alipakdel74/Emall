@@ -1,11 +1,9 @@
 package com.majazeh.emall.data.api
 
-import com.majazeh.emall.data.api.response.Explode
-import com.majazeh.emall.data.api.response.Login
-import com.majazeh.emall.data.api.response.ResponseApi
-import com.majazeh.emall.data.api.response.ProductData
+import com.majazeh.emall.data.api.response.*
 import retrofit2.Response
 import retrofit2.http.*
+
 
 interface DataApi {
 
@@ -40,7 +38,7 @@ interface DataApi {
         @Field("email") email: String,
         @Field("address") address: String,
         @Field("password") password: String
-    ): Response<ResponseApi>
+    ): Response<EditMe>
 
     @FormUrlEncoded
     @POST("register")
@@ -72,26 +70,28 @@ interface DataApi {
         @Field("location") location: String
     ): Response<ResponseApi>
 
-//
-//    @GET("invoices")
-//    suspend fun invoices(
-//        @Header("Authorization") Authorization: String,
-//        @Query("page") page: Int
-//    ): Response<ResponseBody>
-//
-//    @GET("invoices/{invoice_id}")
-//    suspend fun invoiceDetailShow(
-//        @Header("Authorization") Authorization: String,
-//        @Path("invoice_id") invoice_id: String
-//    ): Response<ResponseBody>
-//
+    @GET("cart")
+    suspend fun cart(@Header("Authorization") Authorization: String): Response<ShoppingCartData>
 
-//    @FormUrlEncoded
-//    @POST("requests")
-//    suspend fun requests(
-//        @Header("Authorization") Authorization: String,
-//        @Field("title") title: String,
-//        @Field("description") description: String
-//    ): Response<ResponseBody>
+    @GET("invoices")
+    suspend fun invoices(
+        @Header("Authorization") Authorization: String,
+        @Query("page") page: Int
+    ): Response<InvoiceData>
+
+    @GET("invoices/{invoice_id}")
+    suspend fun invoiceDetailShow(
+        @Header("Authorization") Authorization: String,
+        @Path("invoice_id") invoice_id: String
+    ): Response<ShoppingCartData>
+
+
+    @FormUrlEncoded
+    @POST("requests")
+    suspend fun requests(
+        @Header("Authorization") Authorization: String,
+        @Field("title") title: String,
+        @Field("description") description: String
+    ): Response<ResponseApi>
 
 }

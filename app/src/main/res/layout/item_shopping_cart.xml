@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.majazeh.emall.data.api.response.Product" />
+            type="com.majazeh.emall.data.api.response.PreInvoice" />
 
         <variable
             name="vm"
@@ -32,7 +32,7 @@
                 android:layout_height="0dp"
                 android:padding="4dp"
                 android:scaleType="centerCrop"
-                app:imageUrl='@{item.imageUrl.original != null ? item.imageUrl.original: ""}'
+                app:imageUrl='@{item.product.imageUrl.original != null ? item.product.imageUrl.original: ""}'
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -45,7 +45,7 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:padding="8dp"
-                android:text="@{item.title}"
+                android:text="@{item.product.title}"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:padding="8dp"
-                android:text='@{item.quota+"تعداد "}'
+                android:text='@{item.count+"تعداد "}'
                 android:textColor="@color/medium"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toStartOf="@+id/ivShopping"

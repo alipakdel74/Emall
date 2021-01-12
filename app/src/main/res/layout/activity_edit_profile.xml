@@ -14,49 +14,54 @@
             name="user"
             type="com.majazeh.emall.data.api.response.ProfileMe" />
 
-        <variable
-            name="activity"
-            type="android.app.Activity" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:onClick="@{() -> activity.onBackPressed()}"
-            android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            app:cardBackgroundColor="@color/backgroundLightColor"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="3dp"
-            app:cardPreventCornerOverlap="false"
-            app:cardUseCompatPadding="true"
-            app:contentPaddingBottom="20dp"
-            app:contentPaddingTop="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:theme="@style/Theme.Emall.AppBarOverlay">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:contentInsetEnd="0dp"
+                app:contentInsetStart="0dp"
+                app:menu="@menu/main"
+                app:popupTheme="@style/Theme.Emall.PopupOverlay">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="48dp"
+                    android:gravity="center"
+                    android:text="@string/app_name"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/backgroundLightColor"
+            android:fillViewport="true"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
                 android:orientation="vertical"
-                android:paddingBottom="20dp">
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -78,10 +83,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="right|center_vertical"
-                        android:hint="اسم"
+                        android:hint="@string/name"
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLength="50"
+                        android:text='@{user.name == null ? "" : user.name}'
                         android:textColor="@color/black"
                         android:textColorHint="@color/medium"
                         android:textSize="14sp" />
@@ -93,8 +99,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginRight="20dp"
                     app:boxBackgroundColor="@color/white"
                     app:boxBackgroundMode="filled"
                     app:boxCornerRadiusBottomEnd="16dp"
@@ -115,6 +121,7 @@
                         android:imeOptions="actionNext"
                         android:inputType="phone"
                         android:maxLength="11"
+                        android:text='@{user.mobile == null ? "" : user.mobile}'
                         android:textColor="@color/black"
                         android:textColorHint="@color/medium"
                         android:textSize="14sp" />
@@ -125,10 +132,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginRight="20dp"
                     app:boxBackgroundColor="@color/white"
                     app:boxBackgroundMode="filled"
-                    android:layout_marginTop="8dp"
                     app:boxCornerRadiusBottomEnd="16dp"
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -142,10 +149,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="right|center_vertical"
-                        android:hint="البريد الإلكتروني"
+                        android:hint="@string/email"
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLength="100"
+                        android:text='@{user.email == null ? "" : user.email}'
                         android:textColor="@color/black"
                         android:textColorHint="@color/medium"
                         android:textSize="14sp" />
@@ -156,10 +164,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginRight="20dp"
                     app:boxBackgroundColor="@color/white"
                     app:boxBackgroundMode="filled"
-                    android:layout_marginTop="8dp"
                     app:boxCornerRadiusBottomEnd="16dp"
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
@@ -173,10 +181,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="right|center_vertical"
-                        android:hint="عنوان"
+                        android:hint="@string/address"
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLength="100"
+                        android:text='@{user.address == null ? "" : user.address}'
                         android:textColor="@color/black"
                         android:textColorHint="@color/medium"
                         android:textSize="14sp" />
@@ -217,24 +226,26 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/app_name"
+                    android:focusable="true"
+                    android:onClick="@{() -> vm.edit()}"
+                    android:text="@string/confirm"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/primaryColor"
+                    app:rippleColor="@color/white"
+                    app:srcCompat="@drawable/ic_check"
+                    app:tint="@color/white" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/app_name"
-            android:onClick="@{() -> vm.edit()}"
-            app:backgroundTint="@color/primaryColor"
-            app:elevation="5dp"
-            app:layout_constraintBottom_toBottomOf="@id/card"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card"
-            app:srcCompat="@drawable/ic_check"
-            app:tint="@color/white" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

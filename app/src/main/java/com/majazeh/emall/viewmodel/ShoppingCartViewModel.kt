@@ -77,11 +77,29 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
         data?.apply {
             explode?.apply {
                 if (version.login)
-                    cart?.apply {
-                        _cart.value = this
-                    }
+                    cart()
                 else shoppingCartDB()
             }
+        }
+    }
+
+    private fun cart() {
+        _loading.value = true
+        launch {
+            val res = withContext(Dispatchers.IO) {
+                repo.cart()
+            }
+
+            when (res.status) {
+                BaseResult.Status.ERROR -> _message.value = res.message
+                BaseResult.Status.SUCCESS -> res.data?.apply {
+                    if (is_ok)
+                        _cart.value = data
+                    else _message.value = message_text
+                }
+            }
+
+            _loading.value = false
         }
     }
 
@@ -120,9 +138,10 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
                         )
                     )
                 }
-                val shop =
-                    ShoppingCart("0", 0, total ?: 0, 0f, "", "", 0, amount ?: 0, "", "", products)
-                _cart.value = shop
+                //todo(add database invoice)
+//                val shop =
+//                    ShoppingCart("0", 0, total ?: 0, 0f, "", "", 0, amount ?: 0, "", "", products)
+//                _cart.value = shop
             }
             _loading.value = false
         }

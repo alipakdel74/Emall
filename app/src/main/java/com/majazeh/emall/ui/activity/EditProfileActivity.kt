@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.view.Menu
+import android.view.MenuItem
 import androidx.core.widget.doOnTextChanged
 import com.ali74.libkot.BindingActivity
 import com.ali74.libkot.patternBuilder.SnackBarBuilder
@@ -20,7 +22,7 @@ class EditProfileActivity : BindingActivity<EditProfileBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.activity = this
+        setSupportActionBar(binding.toolbar)
         binding.vm = vm
 
         vm.me.observe(this, {
@@ -69,6 +71,9 @@ class EditProfileActivity : BindingActivity<EditProfileBinding>() {
         vm.message.observe(this, {
             SnackBarBuilder(it).show(this)
         })
+        vm.toast.observe(this, {
+            SnackBarBuilder(getString(it)).show(this)
+        })
 
         vm.edit.observe(this, {
             val intent = Intent()
@@ -77,6 +82,20 @@ class EditProfileActivity : BindingActivity<EditProfileBinding>() {
             finish()
         })
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        menu.findItem(R.id.action_menu).setIcon(R.drawable.ic_back)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_menu) {
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

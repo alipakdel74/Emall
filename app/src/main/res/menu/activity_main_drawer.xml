@@ -25,6 +25,10 @@
         android:id="@+id/nav_Content"
         android:title=""
         app:actionLayout="@layout/menu_contact" />
+    <item
+        android:id="@+id/nav_Question"
+        android:title=""
+        app:actionLayout="@layout/menu_question" />
     <group>
         <item
             android:id="@+id/nav_exit"

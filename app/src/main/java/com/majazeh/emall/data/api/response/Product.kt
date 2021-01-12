@@ -15,7 +15,7 @@ data class Product(
     @SerializedName("discount") val discount: Float,
     @SerializedName("barcode") val barcode: String?,
     @SerializedName("unit_type") val unit_type: String,
-    @SerializedName("unit") val unit: Int,
+    @SerializedName("unit") val unit: Float?,
     @SerializedName("status") val status: String,
     @SerializedName("quota") val quota: String?,
     @SerializedName("description") val description: String?,

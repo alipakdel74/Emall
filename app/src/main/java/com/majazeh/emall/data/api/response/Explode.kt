@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class Explode(
     @SerializedName("is_ok") val is_ok: Boolean,
     @SerializedName("message_text") val message_text: String,
-    @SerializedName("me") val me: ProfileMe?,
+    @SerializedName("me") var me: ProfileMe?,
     @SerializedName("cart") val cart: ShoppingCart?,
     @SerializedName("products") val products: MutableList<Product>,
     @SerializedName("brands") val brands: MutableList<Brand>,
