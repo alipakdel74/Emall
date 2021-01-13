@@ -22,6 +22,9 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
     private val _productsData = MutableLiveData<ProductData>()
     val productsData: LiveData<ProductData> = _productsData
 
+    private val _productsDataSearch = MutableLiveData<ProductData>()
+    val productsDataSearch: LiveData<ProductData> = _productsDataSearch
+
     private val _me = MutableLiveData<ProfileMe>()
     val me: LiveData<ProfileMe> = _me
 
@@ -33,6 +36,9 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
 
     private val _request = MutableLiveData<Boolean>()
     val request: LiveData<Boolean> = _request
+
+    private val _lazyLoad = MutableLiveData<Boolean>()
+    val lazyLoad: LiveData<Boolean> = _lazyLoad
 
     private val data = ExplodeSingleton.getInstance()
 
@@ -72,6 +78,25 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
                 }
             }
             _loading.value = false
+        }
+    }
+
+    fun getProductSearch(page: Int, q: String, cat: Int, brand: String) {
+        _lazyLoad.value = true
+        launch {
+            val res = withContext(Dispatchers.IO) {
+                repo.products(page, q, cat, brand)
+            }
+
+            when (res.status) {
+                BaseResult.Status.ERROR -> _message.value = res.message!!
+                BaseResult.Status.SUCCESS -> res.data?.apply {
+                    if (is_ok)
+                        _productsDataSearch.value = this
+                    else _message.value = message_text
+                }
+            }
+            _lazyLoad.value = false
         }
     }
 
