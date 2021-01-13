@@ -30,7 +30,7 @@ class InvoiceDetailAdapter(private val models: MutableList<PreInvoice>) : BaseAd
         ivShopping.loadImage(models[position].product.imageUrl.original)
         txtShoppingCart.text = models[position].product.title
         txtAmount.text = "تعداد : ${models[position].count}"
-        txtDiscount.text = "تخفیف : ${models[position].discount} "
+        txtDiscount.text = "تخفیف : ${models[position].discount.toInt()} "
         txtTotal.text = "مبلغ اصلی بازار : ${models[position].total_market_price} "
 
         return view

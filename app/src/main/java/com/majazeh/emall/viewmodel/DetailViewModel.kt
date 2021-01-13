@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ali74.libkot.core.BaseResult
 import com.ali74.libkot.core.BaseViewModel
+import com.majazeh.emall.data.api.response.PreInvoice
 import com.majazeh.emall.data.api.response.Product
 import com.majazeh.emall.pattern.ExplodeSingleton
 import com.majazeh.emall.repository.DetailRepository
@@ -23,7 +24,7 @@ class DetailViewModel(private val repo: DetailRepository) : BaseViewModel() {
         _count.value = count
     }
 
-    fun addCart(id: String, count: String, product: Product) {
+    fun addCart(id: String, count: Int, product: Product) {
         data?.apply {
             explode?.apply {
                 if (version.login) {
@@ -32,10 +33,10 @@ class DetailViewModel(private val repo: DetailRepository) : BaseViewModel() {
                 }
             }
         }
-        addCart(product)
+        addCartDB(product, count)
     }
 
-    private fun addCart(id: String, count: String) {
+    private fun addCart(id: String, count: Int) {
         _loading.value = true
         launch {
             val res = withContext(Dispatchers.IO) {
@@ -51,12 +52,23 @@ class DetailViewModel(private val repo: DetailRepository) : BaseViewModel() {
         }
     }
 
-    private fun addCart(product: Product) {
+    private fun addCartDB(product: Product, count: Int) {
+        val invoice = PreInvoice(
+            product.id,
+            "",
+            product,
+            count,
+            product.market_price,
+            product.emall_price,
+            0,
+            0,
+            product.discount
+        )
         _loading.value = true
         try {
             launch {
                 withContext(Dispatchers.IO) {
-                    repo.addProductDB(product)
+                    repo.addProductDB(invoice)
                 }
                 _message.value = "تمت الإضافة إلى عربة التسوق"
                 _loading.value = false
@@ -67,4 +79,5 @@ class DetailViewModel(private val repo: DetailRepository) : BaseViewModel() {
         }
 
     }
+
 }

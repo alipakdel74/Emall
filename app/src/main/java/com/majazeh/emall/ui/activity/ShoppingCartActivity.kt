@@ -17,6 +17,8 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
 
     private val vm by viewModel<ShoppingCartViewModel>()
 
+    private var isLogin = false
+
     override fun getLayoutResId(): Int = R.layout.activity_shopping_cart
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +26,15 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
         setSupportActionBar(binding.toolbar)
 
         binding.btnConfirm.setOnClickListener {
-            startActivityForResult(Intent(this, PreInvoiceActivity::class.java),0)
+            if (isLogin)
+                startActivityForResult(Intent(this, PreInvoiceActivity::class.java), 0)
+            else SnackBarBuilder("تسجيل الدخول للشراء")
+                .setDuration(3000)
+                .setActionText("تسجیل الدخول", R.color.primaryColor)
+                .setAction {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                }
+                .show(this)
         }
 
         vm.cart.observe(this, {
@@ -34,6 +44,10 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
             else {
                 (binding.rclShopping.adapter as ShoppingCartAdapter).refresh(it.details)
             }
+        })
+
+        vm.isLogin.observe(this, {
+            isLogin = it
         })
 
         vm.isLoading.observe(this, {

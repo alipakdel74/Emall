@@ -8,14 +8,14 @@ import com.majazeh.emall.data.api.response.Product
 @Entity(tableName = "tbl_product")
 data class ProductDB(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") val id: Int,
-    @ColumnInfo(name = "productId") val productId: String,
+    @ColumnInfo(name = "uid") val uid: Int,
+    @ColumnInfo(name = "id") val id: String,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "category") val category: String,
     @ColumnInfo(name = "brand") val brand: String,
     @ColumnInfo(name = "market_price") val market_price: Int,
     @ColumnInfo(name = "emall_price") val emall_price: Int,
-    @ColumnInfo(name = "discount") val discount: Float,
+    @ColumnInfo(name = "discount") val discount: Int,
     @ColumnInfo(name = "barcode") val barcode: String?,
     @ColumnInfo(name = "unit_type") val unit_type: String,
     @ColumnInfo(name = "unit") val unit: Float,
@@ -34,7 +34,7 @@ data class ProductDB(
                 product.brand.title,
                 product.market_price,
                 product.emall_price,
-                product.discount,
+                0,
                 product.barcode,
                 product.unit_type,
                 product.unit?:0f,

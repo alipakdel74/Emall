@@ -40,7 +40,7 @@ class DetailActivity : BindingActivity<DetailBinding>() {
         }
 
         binding.btnAddToCart.setOnClickListener {
-            vm.addCart(product!!.id, count.toString(), product!!)
+            vm.addCart(product!!.id, count, product!!)
         }
 
         vm.count.observe(this, {

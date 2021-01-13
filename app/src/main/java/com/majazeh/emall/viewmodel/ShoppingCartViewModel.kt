@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ali74.libkot.core.BaseResult
 import com.ali74.libkot.core.BaseViewModel
-import com.majazeh.emall.data.api.response.ImageUrl
+import com.google.gson.Gson
+import com.majazeh.emall.data.api.response.PreInvoice
 import com.majazeh.emall.data.api.response.Product
-import com.majazeh.emall.data.api.response.ProductValue
 import com.majazeh.emall.data.api.response.ShoppingCart
 import com.majazeh.emall.pattern.ExplodeSingleton
 import com.majazeh.emall.repository.ShoppingCartRepository
@@ -21,6 +21,9 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
 
     private val _closeCart = MutableLiveData<Boolean>()
     val closeCart: LiveData<Boolean> = _closeCart
+
+    private val _isLogin = MutableLiveData<Boolean>()
+    val isLogin: LiveData<Boolean> = _isLogin
 
     private val data = ExplodeSingleton.getInstance()
 
@@ -66,7 +69,6 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
             val res = withContext(Dispatchers.IO) {
                 repo.deleteCartDB(id)
             }
-
             if (res != 0)
                 _closeCart.value = true
             _loading.value = false
@@ -76,6 +78,7 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
     fun shoppingCart() {
         data?.apply {
             explode?.apply {
+                _isLogin.value = version.login
                 if (version.login)
                     cart()
                 else shoppingCartDB()
@@ -116,32 +119,38 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
                 repo.getAmountAll()
             }
 
-            res?.apply {
-                val products = mutableListOf<Product>()
-                forEach {
-                    products.add(
-                        Product(
-                            it.productId,
-                            it.title,
-                            ProductValue(0, it.category),
-                            ProductValue(0, it.brand),
-                            it.market_price,
-                            it.emall_price,
-                            it.discount,
-                            it.barcode,
-                            it.unit_type,
-                            it.unit,
-                            it.status,
-                            it.quota,
-                            it.description,
-                            ImageUrl(it.imageUrl, "", "", "")
-                        )
+            res?.let {
+                val invoices = mutableListOf<PreInvoice>()
+                res.forEach {
+                    val product = Gson().fromJson(it.product, Product::class.java)
+                    val invoice = PreInvoice(
+                        it.id,
+                        it.invoice_id,
+                        product,
+                        it.count,
+                        it.market_price,
+                        it.emall_price,
+                        it.market_price * it.count,
+                        it.emall_price * it.count,
+                        it.discount,
                     )
+                    invoices.add(invoice)
                 }
-                //todo(add database invoice)
-//                val shop =
-//                    ShoppingCart("0", 0, total ?: 0, 0f, "", "", 0, amount ?: 0, "", "", products)
-//                _cart.value = shop
+
+                val shop = ShoppingCart(
+                    "0",
+                    0,
+                    total ?: 0,
+                    0,
+                    "",
+                    "",
+                    invoices.size,
+                    amount ?: 0,
+                    "",
+                    "",
+                    invoices
+                )
+                _cart.value = shop
             }
             _loading.value = false
         }

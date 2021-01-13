@@ -123,7 +123,7 @@ class MainActivity : BindingActivity<MainBinding>() {
             else progressDialog.dismiss()
         })
 
-        vm.responseApi.observe(this, {
+        vm.logout.observe(this, {
             if (it.is_ok) {
                 AppPreferences.auth = ""
                 startActivity(Intent(this, LoginActivity::class.java))

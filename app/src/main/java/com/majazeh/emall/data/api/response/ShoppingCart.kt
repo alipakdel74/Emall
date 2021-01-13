@@ -6,7 +6,7 @@ data class ShoppingCart(
     @SerializedName("id") val id: String,
     @SerializedName("market_price") val market_price: Int,
     @SerializedName("emall_price") val emall_price: Int,
-    @SerializedName("discount") val discount: Float,
+    @SerializedName("discount") val discount: Int,
     @SerializedName("type") val type: String,
     @SerializedName("status") val status: String?,
     @SerializedName("products") val products: Int,
@@ -25,5 +25,5 @@ data class PreInvoice(
     @SerializedName("emall_price") val emall_price: Int,
     @SerializedName("total_market_price") val total_market_price: Int,
     @SerializedName("total_emall_price") val total_emall_price: Int,
-    @SerializedName("discount") val discount: Int,
+    @SerializedName("discount") val discount: Float,
 )

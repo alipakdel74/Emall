@@ -54,7 +54,7 @@ interface DataApi {
     suspend fun addCart(
         @Header("Authorization") Authorization: String,
         @Field("product_id") product_id: String,
-        @Field("count") count: String
+        @Field("count") count: Int
     ): Response<ResponseApi>
 
     @DELETE("cart/details/{id}")

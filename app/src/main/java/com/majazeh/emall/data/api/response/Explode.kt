@@ -14,7 +14,7 @@ data class Explode(
 )
 
 data class Version(
-    @SerializedName("login") val login: Boolean,
+    @SerializedName("login") var login: Boolean,
     @SerializedName("api") val api: VersionValue,
     @SerializedName("android") val android: VersionValue,
     @SerializedName("ios") val ios: VersionValue,

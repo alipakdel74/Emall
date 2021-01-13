@@ -29,7 +29,7 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
     val isLogin: LiveData<Boolean> = _isLogin
 
     private val _logout = MutableLiveData<ResponseApi>()
-    val responseApi: LiveData<ResponseApi> = _logout
+    val logout: LiveData<ResponseApi> = _logout
 
     private val _request = MutableLiveData<Boolean>()
     val request: LiveData<Boolean> = _request
@@ -86,7 +86,10 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
                 BaseResult.Status.ERROR -> _message.value = res.message!!
                 BaseResult.Status.SUCCESS -> res.data?.apply {
                     _logout.value = this
-                    data?.explode = null
+                    data?.explode?.version?.login = false
+                    data?.explode?.me = null
+                    _me.value = null
+                    _isLogin.value = false
                     _message.value = message_text
                 }
             }
@@ -110,7 +113,7 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
         _loading.value = true
         launch {
             val res = withContext(Dispatchers.IO) {
-                repo.addProduct(id, "1")
+                repo.addProduct(id, 1)
             }
             when (res.status) {
                 BaseResult.Status.ERROR -> _message.value = res.message!!
@@ -123,11 +126,22 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
     }
 
     private fun addCart(product: Product) {
+        val invoice = PreInvoice(
+            product.id,
+            "",
+            product,
+            1,
+            product.market_price,
+            product.emall_price,
+            0,
+            0,
+            product.discount
+        )
         _loading.value = true
         try {
             launch {
                 withContext(Dispatchers.IO) {
-                    repo.addProductDB(product)
+                    repo.addProductDB(invoice)
                 }
                 _message.value = "تمت الإضافة إلى عربة التسوق"
                 _loading.value = false
