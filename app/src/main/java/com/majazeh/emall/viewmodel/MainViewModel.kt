@@ -172,8 +172,8 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
                 withContext(Dispatchers.IO) {
                     repo.addProductDB(invoice)
                 }
-                _toast.value = R.string.successAddToCart
                 _loading.value = false
+                _toast.value = R.string.successAddToCart
             }
         } catch (e: Exception) {
             _loading.value = false
