@@ -113,12 +113,17 @@ class MainActivity : BindingActivity<MainBinding>() {
             }
         })
         vm.me.observe(this, {
-            if (!it.name.isNullOrEmpty())
+            binding.navView.getHeaderView(0)
+                .findViewById<AppCompatTextView>(R.id.fullName).text = ""
+            binding.navView.getHeaderView(0)
+                .findViewById<AppCompatTextView>(R.id.username).text = ""
+            it?.apply {
+                if (!name.isNullOrEmpty())
+                    binding.navView.getHeaderView(0)
+                        .findViewById<AppCompatTextView>(R.id.fullName).text = name
                 binding.navView.getHeaderView(0)
-                    .findViewById<AppCompatTextView>(R.id.fullName).text =
-                    it.name
-            binding.navView.getHeaderView(0).findViewById<AppCompatTextView>(R.id.username).text =
-                it.mobile
+                    .findViewById<AppCompatTextView>(R.id.username).text = mobile
+            }
         })
 
         vm.request.observe(this, {

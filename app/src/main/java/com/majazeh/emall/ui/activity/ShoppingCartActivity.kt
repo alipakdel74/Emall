@@ -44,9 +44,11 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
             if (it.details.isNullOrEmpty()) {
                 binding.txtNull.visibility = View.VISIBLE
                 binding.constrainDetail.visibility = View.GONE
+                binding.rclShopping.visibility = View.GONE
             } else {
                 binding.txtNull.visibility = View.GONE
                 binding.constrainDetail.visibility = View.VISIBLE
+                binding.rclShopping.visibility = View.VISIBLE
                 if (binding.rclShopping.adapter == null)
                     binding.rclShopping.adapter =
                         ShoppingCartAdapter(it.details, vm, CartType.SHOPPING)

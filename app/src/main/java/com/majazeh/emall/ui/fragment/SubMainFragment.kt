@@ -24,14 +24,39 @@ class SubMainFragment : BindingFragment<SubMainBinding>() {
 
     override fun getLayoutResId(): Int = R.layout.fragment_sub_main
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        arguments?.apply {
+//            idCategory = getInt(CAT_ID)
+//        }
+//
+//        vm.getProduct(1, "", idCategory, "")
+//
+//        vm.productsData.observe(this, {
+//            if (pageaction == 1) {
+//                if (!it.isNullOrEmpty()) {
+//                    adapter = ProductAdapter(it, vm)
+//                    binding.rclProduct.adapter = adapter
+//                    binding.txtNull.visibility = View.GONE
+//                } else binding.txtNull.visibility = View.VISIBLE
+//            } else {
+//                adapter?.addAll(it)
+//            }
+//        })
+//
+//    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val manager = GridLayoutManager(requireContext(), 2)
+        binding.rclProduct.layoutManager = manager
+
+        // if page limit state in mainFragment is 2
+        pageaction = 1
         arguments?.apply {
             idCategory = getInt(CAT_ID)
         }
-
         vm.getProduct(1, "", idCategory, "")
-
         vm.productsData.observe(this, {
             if (pageaction == 1) {
                 if (!it.isNullOrEmpty()) {
@@ -39,17 +64,8 @@ class SubMainFragment : BindingFragment<SubMainBinding>() {
                     binding.rclProduct.adapter = adapter
                     binding.txtNull.visibility = View.GONE
                 } else binding.txtNull.visibility = View.VISIBLE
-            } else {
-                adapter?.addAll(it)
-            }
+            } else adapter?.addAll(it)
         })
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val manager = GridLayoutManager(requireContext(), 2)
-        binding.rclProduct.layoutManager = manager
 
         binding.rclProduct.addOnScrollListener(object : EndlessRVScroll(manager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {

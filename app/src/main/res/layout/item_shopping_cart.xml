@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:padding="8dp"
-                android:text='@{item.count+"تعداد "}'
+                android:text='@{item.count+" عدد"}'
                 android:textColor="@color/medium"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toStartOf="@+id/ivShopping"

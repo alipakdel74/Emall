@@ -29,8 +29,8 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
     private val _productsDataSearch = MutableLiveData<ProductData>()
     val productsDataSearch: LiveData<ProductData> = _productsDataSearch
 
-    private val _me = MutableLiveData<ProfileMe>()
-    val me: LiveData<ProfileMe> = _me
+    private val _me = MutableLiveData<ProfileMe?>()
+    val me: LiveData<ProfileMe?> = _me
 
     private val _isLogin = MutableLiveData<Boolean>()
     val isLogin: LiveData<Boolean> = _isLogin

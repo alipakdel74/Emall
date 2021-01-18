@@ -47,7 +47,7 @@ class MainFragment : BindingFragment<MainFragmentBinding>() {
             binding.viewpager.adapter =
                 FragmentPagerItemAdapter(childFragmentManager, fragmentPagerItems)
             binding.smartTab.setViewPager(binding.viewpager)
-//            binding.viewpager.offscreenPageLimit = size
+            binding.viewpager.offscreenPageLimit = 2
             binding.viewpager.currentItem = size - 1
         }
     }
