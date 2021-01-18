@@ -80,7 +80,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center|right"
-                android:onClick="@{() -> vm.addCart(item.id,item)}"
+                android:onClick="@{() -> vm.addCart(item)}"
                 android:padding="12dp"
                 android:text="@string/addToShoppingCart"
                 android:textColor="@color/white"

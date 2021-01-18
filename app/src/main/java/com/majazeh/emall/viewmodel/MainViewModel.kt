@@ -126,35 +126,7 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
         }
     }
 
-    fun addCart(id: String, product: Product) {
-        data?.apply {
-            explode?.apply {
-                if (version.login) {
-                    addCart(id)
-                    return
-                }
-            }
-        }
-        addCart(product)
-    }
-
-    private fun addCart(id: String) {
-        _loading.value = true
-        launch {
-            val res = withContext(Dispatchers.IO) {
-                repo.addProduct(id, 1)
-            }
-            when (res.status) {
-                BaseResult.Status.ERROR -> _message.value = res.message!!
-                BaseResult.Status.SUCCESS -> res.data?.apply {
-                    _message.value = message_text
-                }
-            }
-            _loading.value = false
-        }
-    }
-
-    private fun addCart(product: Product) {
+    fun addCart(product: Product) {
         val invoice = PreInvoice(
             product.id,
             "",

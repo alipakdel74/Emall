@@ -18,6 +18,10 @@ interface InvoiceDao {
     @Query("DELETE FROM tbl_invoice WHERE id=:id")
     suspend fun deleteInvoice(id: String): Int
 
+    @Query("DELETE FROM tbl_invoice")
+    suspend fun deleteAll(): Int
+
+
     @Query("SELECT SUM(emall_price) FROM tbl_invoice")
     suspend fun getTotal(): Int?
 

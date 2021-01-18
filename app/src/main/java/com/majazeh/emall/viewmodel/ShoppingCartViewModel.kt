@@ -1,5 +1,6 @@
 package com.majazeh.emall.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ali74.libkot.core.BaseResult
@@ -79,9 +80,7 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
         data?.apply {
             explode?.apply {
                 _isLogin.value = version.login
-                if (version.login)
-                    cart()
-                else shoppingCartDB()
+                shoppingCartDB(this.version.login)
             }
         }
     }
@@ -101,12 +100,11 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
                     else _message.value = message_text
                 }
             }
-
             _loading.value = false
         }
     }
 
-    private fun shoppingCartDB() {
+    private fun shoppingCartDB(login: Boolean) {
         launch {
             val res = withContext(Dispatchers.IO) {
                 repo.getProductDB()
@@ -135,22 +133,50 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
                         it.discount,
                     )
                     invoices.add(invoice)
+
+                    if (login)
+                        addCart(it.id, it.count)
                 }
 
-                val shop = ShoppingCart(
-                    "0",
-                    0,
-                    total ?: 0,
-                    0,
-                    "",
-                    "",
-                    invoices.size,
-                    amount ?: 0,
-                    "",
-                    "",
-                    invoices
-                )
-                _cart.value = shop
+                if (login) {
+                    val deleteAll = withContext(Dispatchers.IO) {
+                        repo.deleteAll()
+                    }
+                    if (deleteAll != 1)
+                        Log.i("Error", "deleteAll")
+                    cart()
+                } else {
+                    val shop = ShoppingCart(
+                        "0",
+                        0,
+                        total ?: 0,
+                        0,
+                        "",
+                        "",
+                        invoices.size,
+                        amount ?: 0,
+                        "",
+                        "",
+                        invoices
+                    )
+                    _cart.value = shop
+                }
+            }
+            _loading.value = false
+        }
+    }
+
+    private fun addCart(id: String, count: Int) {
+        _loading.value = true
+        launch {
+            val res = withContext(Dispatchers.IO) {
+                repo.addProduct(id, count)
+            }
+            when (res.status) {
+                BaseResult.Status.ERROR -> _message.value = res.message!!
+                BaseResult.Status.SUCCESS -> res.data?.apply {
+                    if (!is_ok) _message.value = message_text
+                }
             }
             _loading.value = false
         }
