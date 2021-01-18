@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.fragment.SubMainFragment">
 
@@ -16,6 +15,19 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingBottom="8dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtNull"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:gravity="center"
+            android:text="@string/messageNotFond"
+            android:padding="8dp"
+            android:visibility="gone"
+            android:textColor="@color/medium"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
 
         <ProgressBar
             android:id="@+id/prbLazyLoad"

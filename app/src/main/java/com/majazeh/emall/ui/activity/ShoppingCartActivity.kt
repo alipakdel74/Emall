@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.ali74.libkot.BindingActivity
 import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.majazeh.emall.R
@@ -27,7 +28,7 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
 
         binding.btnConfirm.setOnClickListener {
             if (isLogin)
-                startActivityForResult(Intent(this, PreInvoiceActivity::class.java), 0)
+                startActivity(Intent(this, MapsActivity::class.java))
             else SnackBarBuilder("تسجيل الدخول للشراء")
                 .setDuration(3000)
                 .setActionText("تسجیل الدخول", R.color.primaryColor)
@@ -39,11 +40,20 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
 
         vm.cart.observe(this, {
             binding.cart = it
-            if (binding.rclShopping.adapter == null)
-                binding.rclShopping.adapter = ShoppingCartAdapter(it.details, vm, CartType.SHOPPING)
-            else {
-                (binding.rclShopping.adapter as ShoppingCartAdapter).refresh(it.details)
+
+            if (it.details.isNullOrEmpty()) {
+                binding.txtNull.visibility = View.VISIBLE
+                binding.constrainDetail.visibility = View.GONE
+            } else {
+                binding.txtNull.visibility = View.GONE
+                binding.constrainDetail.visibility = View.VISIBLE
+                if (binding.rclShopping.adapter == null)
+                    binding.rclShopping.adapter =
+                        ShoppingCartAdapter(it.details, vm, CartType.SHOPPING)
+                else
+                    (binding.rclShopping.adapter as ShoppingCartAdapter).refresh(it.details)
             }
+
         })
 
         vm.isLogin.observe(this, {
@@ -77,13 +87,6 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK)
-            if (data!!.getBooleanExtra("changeData", false))
-                vm.shoppingCart()
     }
 
 }

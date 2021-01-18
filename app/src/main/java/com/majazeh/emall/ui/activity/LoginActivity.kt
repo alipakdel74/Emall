@@ -67,6 +67,10 @@ class LoginActivity : BindingActivity<LoginBinding>() {
             hideKeyboard(this)
             SnackBarBuilder(it).show(this)
         })
+        vm.toast.observe(this, {
+            hideKeyboard(this)
+            SnackBarBuilder(getString(it)).show(this)
+        })
     }
 
 }

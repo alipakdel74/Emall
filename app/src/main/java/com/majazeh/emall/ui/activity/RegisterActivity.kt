@@ -56,6 +56,10 @@ class RegisterActivity : BindingActivity<RegisterBinding>() {
             hideKeyboard(this)
             SnackBarBuilder(it).show(this)
         })
+        vm.toast.observe(this, {
+            hideKeyboard(this)
+            SnackBarBuilder(getString(it)).show(this)
+        })
         vm.isLoading.observe(this, {
             if (it)
                 progressDialog.show()

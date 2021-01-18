@@ -19,6 +19,9 @@ class InvoiceViewModel(private val repo: InvoiceRepository) : BaseViewModel() {
     private val _invoiceDetail = MutableLiveData<ShoppingCart>()
     val invoiceDetail: LiveData<ShoppingCart> = _invoiceDetail
 
+    init {
+        getInvoice(1)
+    }
 
     fun getInvoice(page: Int) {
         _loading.value = true

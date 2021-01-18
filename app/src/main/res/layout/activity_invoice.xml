@@ -47,6 +47,19 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtNull"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:gravity="center"
+            android:text="@string/messageNotFond"
+            android:padding="8dp"
+            android:visibility="gone"
+            android:textColor="@color/medium"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
         <ProgressBar
             android:id="@+id/prbLazyLoad"
             android:layout_width="20dp"

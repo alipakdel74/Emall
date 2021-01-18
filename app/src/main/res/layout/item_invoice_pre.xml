@@ -123,7 +123,7 @@
                     android:layout_marginStart="8dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:text="حذف"
+                    android:text="@string/delete"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold"

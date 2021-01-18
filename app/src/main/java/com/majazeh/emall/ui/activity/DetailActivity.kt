@@ -51,6 +51,9 @@ class DetailActivity : BindingActivity<DetailBinding>() {
         vm.message.observe(this, {
             SnackBarBuilder(it).show(this)
         })
+        vm.toast.observe(this, {
+            SnackBarBuilder(getString(it)).show(this)
+        })
         vm.isLoading.observe(this, {
             if (it)
                 progressDialog.show()

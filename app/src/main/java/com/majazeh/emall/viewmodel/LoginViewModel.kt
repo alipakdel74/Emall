@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ali74.libkot.core.BaseResult
 import com.ali74.libkot.core.BaseViewModel
 import com.ali74.libkot.utils.formatMobile
+import com.majazeh.emall.R
 import com.majazeh.emall.pattern.ExplodeSingleton
 import com.majazeh.emall.repository.LoginRepository
 import com.majazeh.emall.utils.AppPreferences
@@ -14,6 +15,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class LoginViewModel(private val repo: LoginRepository) : BaseViewModel() {
+
+    private val _toast = MutableLiveData<Int>()
+    val toast: LiveData<Int> = _toast
 
     private val _dataLogin = MutableLiveData<Boolean>()
     val dataLogin: LiveData<Boolean> = _dataLogin
@@ -29,15 +33,15 @@ class LoginViewModel(private val repo: LoginRepository) : BaseViewModel() {
         val password = mPassword.get() ?: ""
 
         if (username.isEmpty()) {
-            _message.value = "أدخل رقم هاتفك المحمول"
+            _toast.value = R.string.messageEmptyMobile
             return
         }
         if (!formatMobile(username)) {
-            _message.value = "تم إدخال رقم الهاتف المحمول غير صحيح"
+            _toast.value = R.string.messageFormatMobile
             return
         }
         if (password.isEmpty()) {
-            _message.value = "ادخل رقمك السري"
+            _toast.value = R.string.messageEmptyPassword
             return
         }
 
@@ -69,19 +73,19 @@ class LoginViewModel(private val repo: LoginRepository) : BaseViewModel() {
         val password = mPassword.get() ?: ""
 
         if (name.isEmpty()) {
-            _message.value = "أدخل اسم"
+            _toast.value = R.string.messageEmptyName
             return
         }
         if (username.isEmpty()) {
-            _message.value = "أدخل رقم هاتفك المحمول"
+            _toast.value = R.string.messageEmptyMobile
             return
         }
         if (!formatMobile(username)) {
-            _message.value = "تم إدخال رقم الهاتف المحمول غير صحيح"
+            _toast.value = R.string.messageFormatMobile
             return
         }
         if (password.isEmpty()) {
-            _message.value = "ادخل رقمك السري"
+            _toast.value = R.string.messageEmptyPassword
             return
         }
 

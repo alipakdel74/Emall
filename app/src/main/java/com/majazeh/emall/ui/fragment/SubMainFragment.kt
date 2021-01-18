@@ -29,16 +29,18 @@ class SubMainFragment : BindingFragment<SubMainBinding>() {
         arguments?.apply {
             idCategory = getInt(CAT_ID)
         }
+
         vm.getProduct(1, "", idCategory, "")
 
         vm.productsData.observe(this, {
             if (pageaction == 1) {
-                if (binding.rclProduct.adapter == null) {
-                    adapter = ProductAdapter(it.data, vm)
+                if (!it.isNullOrEmpty()) {
+                    adapter = ProductAdapter(it, vm)
                     binding.rclProduct.adapter = adapter
-                }
+                    binding.txtNull.visibility = View.GONE
+                } else binding.txtNull.visibility = View.VISIBLE
             } else {
-                adapter?.addAll(it.data)
+                adapter?.addAll(it)
             }
         })
 

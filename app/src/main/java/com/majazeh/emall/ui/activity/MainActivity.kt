@@ -69,16 +69,19 @@ class MainActivity : BindingActivity<MainBinding>() {
                 R.id.nav_profile -> {
                     startActivity(Intent(this, ProfileActivity::class.java))
                 }
-                R.id.nav_Content -> {
+                R.id.nav_content -> {
                     startActivity(Intent(this, ContentActivity::class.java))
                 }
-                R.id.nav_Intro -> {
+                R.id.nav_intro -> {
                     startActivity(Intent(this, IntroActivity::class.java))
                 }
                 R.id.nav_invoice -> {
                     startActivity(Intent(this, InvoiceActivity::class.java))
                 }
-                R.id.nav_Question -> {
+                R.id.nav_preInvoice -> {
+                    startActivity(Intent(this, PreInvoiceActivity::class.java))
+                }
+                R.id.nav_question -> {
                     questionDialog.show()
                 }
                 R.id.nav_exit -> {
@@ -98,11 +101,13 @@ class MainActivity : BindingActivity<MainBinding>() {
             if (it) {
                 binding.navView.menu.findItem(R.id.nav_user).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_invoice).isVisible = true
+                binding.navView.menu.findItem(R.id.nav_preInvoice).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_exit).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_profile).isVisible = true
             } else {
                 binding.navView.menu.findItem(R.id.nav_user).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_invoice).isVisible = false
+                binding.navView.menu.findItem(R.id.nav_preInvoice).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_exit).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_profile).isVisible = false
             }
@@ -148,6 +153,13 @@ class MainActivity : BindingActivity<MainBinding>() {
                 AppPreferences.auth = ""
                 startActivity(Intent(this, LoginActivity::class.java))
             }
+        })
+        vm.message.observe(this, {
+            SnackBarBuilder(it).show(this)
+        })
+
+        vm.toast.observe(this, {
+            SnackBarBuilder(getString(it)).show(this)
         })
 
     }

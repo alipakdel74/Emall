@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.ali74.libkot.BindingActivity
 import com.ali74.libkot.patternBuilder.QuestionDialogBuilder
 import com.ali74.libkot.patternBuilder.SnackBarBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.majazeh.emall.R
 import com.majazeh.emall.databinding.SplashBinding
 import com.majazeh.emall.utils.AppPreferences
@@ -22,7 +23,16 @@ class SplashActivity : BindingActivity<SplashBinding>() {
         super.onCreate(savedInstanceState)
 
         vm.message.observe(this, {
-            SnackBarBuilder(it).show(this)
+            SnackBarBuilder(it)
+                .setActionText(getString(R.string.tryAgain), R.color.black)
+                .setDuration(Snackbar.LENGTH_INDEFINITE)
+                .setAction { vm.getExplode() }.show(this)
+        })
+        vm.isLoading.observe(this, {
+            if (it)
+                binding.progressSplash.show()
+            else
+                binding.progressSplash.hide()
         })
 
         vm.version.observe(this, {

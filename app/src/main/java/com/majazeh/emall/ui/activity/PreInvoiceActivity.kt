@@ -1,9 +1,9 @@
 package com.majazeh.emall.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.ali74.libkot.BindingActivity
 import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.majazeh.emall.R
@@ -16,8 +16,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class PreInvoiceActivity : BindingActivity<PreInvoiceBinding>() {
 
     private val vm by viewModel<ShoppingCartViewModel>()
-
-    private var changeData = false
 
     override fun getLayoutResId(): Int = R.layout.activity_pre_invoice
 
@@ -36,19 +34,23 @@ class PreInvoiceActivity : BindingActivity<PreInvoiceBinding>() {
 
         vm.cart.observe(this, {
             binding.cart = it
-            if (binding.rclInvoice.adapter == null)
-                binding.rclInvoice.adapter = ShoppingCartAdapter(it.details, vm, CartType.INVOICE)
-            else {
-                (binding.rclInvoice.adapter as ShoppingCartAdapter).refresh(it.details)
+            if (it.details.isNullOrEmpty()) {
+                binding.txtNull.visibility = View.VISIBLE
+                binding.cardDetail.visibility = View.GONE
+            } else {
+                binding.txtNull.visibility = View.GONE
+                binding.cardDetail.visibility = View.VISIBLE
+                if (binding.rclInvoice.adapter == null)
+                    binding.rclInvoice.adapter =
+                        ShoppingCartAdapter(it.details, vm, CartType.INVOICE)
+                else
+                    (binding.rclInvoice.adapter as ShoppingCartAdapter).refresh(it.details)
             }
         })
         vm.closeCart.observe(this, {
-            if (it) {
+            if (it)
                 vm.shoppingCart()
-                changeData = true
-            }
         })
-
 
     }
 
@@ -66,10 +68,5 @@ class PreInvoiceActivity : BindingActivity<PreInvoiceBinding>() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        val intent = Intent()
-        intent.putExtra("changeData",changeData)
-        setResult(RESULT_OK,intent)
-        finish()
-    }
+
 }

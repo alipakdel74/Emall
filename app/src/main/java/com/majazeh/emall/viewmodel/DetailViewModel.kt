@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ali74.libkot.core.BaseResult
 import com.ali74.libkot.core.BaseViewModel
+import com.majazeh.emall.R
 import com.majazeh.emall.data.api.response.PreInvoice
 import com.majazeh.emall.data.api.response.Product
 import com.majazeh.emall.pattern.ExplodeSingleton
@@ -14,6 +15,9 @@ import kotlinx.coroutines.withContext
 import java.lang.Exception
 
 class DetailViewModel(private val repo: DetailRepository) : BaseViewModel() {
+
+    private val _toast = MutableLiveData<Int>()
+    val toast: LiveData<Int> = _toast
 
     private val _count = MutableLiveData<Int>()
     val count: LiveData<Int> = _count
@@ -70,7 +74,7 @@ class DetailViewModel(private val repo: DetailRepository) : BaseViewModel() {
                 withContext(Dispatchers.IO) {
                     repo.addProductDB(invoice)
                 }
-                _message.value = "تمت الإضافة إلى عربة التسوق"
+                _toast.value = R.string.successAddToCart
                 _loading.value = false
             }
         } catch (e: Exception) {

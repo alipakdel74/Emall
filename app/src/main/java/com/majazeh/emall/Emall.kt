@@ -2,6 +2,7 @@ package com.majazeh.emall
 
 import android.app.Application
 import com.ali74.libkot.utils.AppTheme
+import com.google.android.libraries.places.api.Places
 import com.majazeh.emall.di.*
 import com.majazeh.emall.utils.AppPreferences
 import org.koin.android.ext.koin.androidContext
@@ -14,6 +15,7 @@ class Emall : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Places.initialize(applicationContext, getString(R.string.google_maps_key))
         AppPreferences.init(this)
 
         AppTheme.setAppFont(this, "DroidKufi_Regular.ttf")

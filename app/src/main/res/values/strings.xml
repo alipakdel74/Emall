@@ -11,28 +11,49 @@
     <string name="signIn">دخول</string>
     <string name="addToShoppingCart">إضف بالسلة</string>
     <string name="confirm">تأیید</string>
-
-    <string name="invalidName">نام خود را وارد نمایید</string>
-    <string name="invalidFamily">نام خانوادگی خود را وارد نمایید</string>
-    <string name="invalidEmail">ایمیل به درستی وارد نشده است</string>
-    <string name="invalidUsername">شماره موبایل به درستی وارد نشده است</string>
-    <string name="invalidPassword">وارد کردن رمزعبور اجباری می باشد</string>
-    <string name="invalidAddress">آدرس نمی تواند کم تر از 10 کاراکتر باشد</string>
-    <string name="successAddToCart">با موفقیت به سبد اضافه شد</string>
-
-    <string name="menu_user">ورود/ثبت نام</string>
-    <string name="menu_profile">پروفایل</string>
-    <string name="menu_invoice">فاکتور</string>
-    <string name="menu_question">سوال</string>
-    <string name="menu_info">درباره ما</string>
-    <string name="menu_content">تماس با ما</string>
-    <string name="menu_exit">خروج از حساب کاربری</string>
     <string name="email">پست الکترونیکی</string>
     <string name="address">آدرس</string>
     <string name="amount">تعداد</string>
     <string name="closeDialog">بستن</string>
-    <string name="contentDescription">من صفحة المنتج الرئيسيةمن صفحة المنتج الرئيسية من صفحة المنتج الرئيسية من صفحة المنتج الرئيسيةمن صفحة المنتج الرئيسيةمن صفحة المنتج الرئيسية من صفحة المنتج الرئيسيةمن صفحة المنتج الرئيسية من صفحة المنتج الرئيسية من صفحة المنتج الرئيسيةمن صفحة المنتج الرئيسيةمن صفحة المنتج الرئيسية</string>
     <string name="title">عنوان</string>
     <string name="desc">توضیح</string>
+    <string name="prev">قبلی</string>
+    <string name="next">بعدی</string>
+    <string name="startApp">شروع</string>
+    <string name="delete">حذف</string>
     <string name="messageNotFond">موردی یافت نشد</string>
+    <string name="activeLocation">فعال</string>
+    <string name="tryAgain">سعی مجدد</string>
+
+    <string name="messageEmptyName">نام خود را وارد نمایید</string>
+    <string name="invalidFamily">نام خانوادگی خود را وارد نمایید</string>
+    <string name="invalidEmail">ایمیل به درستی وارد نشده است</string>
+    <string name="messageFormatMobile">شماره موبایل به درستی وارد نشده است</string>
+    <string name="messageEmptyPassword">رمزعبور خود را وارد نمایید</string>
+    <string name="invalidAddress">آدرس نمی تواند کم تر از 10 کاراکتر باشد</string>
+    <string name="successAddToCart">با موفقیت به سبد اضافه شد</string>
+    <string name="messageOnLocation">لطفا GPS خود را فعال کنید</string>
+    <string name="messageSelectLocation">لطفا مکان خود را روی نقشه انتخاب کنید</string>
+    <string name="messageEmptyMobile">تلفن همراه خود را وارد نمایید</string>
+
+    <string name="menu_user">ورود/ثبت نام</string>
+    <string name="menu_profile">پروفایل</string>
+    <string name="menu_invoice">فاکتور</string>
+    <string name="menu_preInvoice">پیش فاکتور</string>
+    <string name="menu_question">سوالی دارید؟</string>
+    <string name="menu_info">درباره ما</string>
+    <string name="menu_content">تماس با ما</string>
+    <string name="menu_exit">خروج از حساب کاربری</string>
+
+    <string name="contentDescription">من صفحة المنتج الرئيسيةمن صفحة المنتج الرئيسية من صفحة المنتج الرئيسية من صفحة المنتج الرئيسيةمن صفحة المنتج الرئيسيةمن صفحة المنتج الرئيسية من صفحة المنتج الرئيسيةمن صفحة المنتج الرئيسية من صفحة المنتج الرئيسية من صفحة المنتج الرئيسيةمن صفحة المنتج الرئيسيةمن صفحة المنتج الرئيسية</string>
+    <string name="contentTitle">تیتر درباره ی ما</string>
+    <string name="contentTel">+078000000</string>
+
+    <string name="invoiceItem_number">تسلسل</string>
+    <string name="invoiceItem_status">حالة</string>
+    <string name="invoiceItem_amount">تعداد</string>
+    <string name="invoiceItem_discount">تخفیف</string>
+    <string name="invoiceItem_total">مجموع</string>
+    <string name="invoiceItem_date">تاریخ</string>
+
 </resources>

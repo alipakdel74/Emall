@@ -1,13 +1,13 @@
 package com.majazeh.emall.ui.activity
 
 import android.os.Bundle
-import android.system.Os.close
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ali74.libkot.BindingActivity
+import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.ali74.libkot.recyclerview.EndlessRVScroll
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.majazeh.emall.R
@@ -29,10 +29,17 @@ class InvoiceActivity : BindingActivity<InvoiceBiding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(binding.toolbar)
+
         val manager = LinearLayoutManager(this)
         binding.rclInvoice.layoutManager = manager
 
-        vm.getInvoice(pageaction)
+        binding.rclInvoice.addOnScrollListener(object : EndlessRVScroll(manager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+                binding.prbLazyLoad.visibility = View.VISIBLE
+                pageaction = page + 1
+                vm.getInvoice(pageaction)
+            }
+        })
 
         vm.invoiceDetail.observe(this, {
             val adapter = InvoiceDetailAdapter(it.details)
@@ -42,13 +49,13 @@ class InvoiceActivity : BindingActivity<InvoiceBiding>() {
                     dialog.dismiss()
                 }.create().show()
         })
-
         vm.invoice.observe(this, {
             if (pageaction == 1) {
-                if (binding.rclInvoice.adapter == null) {
+                if (!it.isNullOrEmpty()) {
                     adapter = InvoiceAdapter(it, vm)
                     binding.rclInvoice.adapter = adapter
-                }
+                    binding.txtNull.visibility = View.GONE
+                } else binding.txtNull.visibility = View.VISIBLE
             } else {
                 adapter?.addAll(it)
             }
@@ -64,13 +71,8 @@ class InvoiceActivity : BindingActivity<InvoiceBiding>() {
                 progressDialog.dismiss()
             }
         })
-
-        binding.rclInvoice.addOnScrollListener(object : EndlessRVScroll(manager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-                binding.prbLazyLoad.visibility = View.VISIBLE
-                pageaction = page + 1
-                vm.getInvoice(pageaction)
-            }
+        vm.message.observe(this, {
+            SnackBarBuilder(it).show(this)
         })
 
     }

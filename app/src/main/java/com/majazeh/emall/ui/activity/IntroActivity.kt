@@ -32,9 +32,9 @@ class IntroActivity : BindingActivity<IntroBinding>() {
                     positionOffsetPixels: Int
                 ) {
                     if (position == intro.size - 1)
-                        binding.floatNext.text = "البداية"
+                        binding.floatNext.text = getString(R.string.startApp)
                     else
-                        binding.floatNext.text = "التالي"
+                        binding.floatNext.text = getString(R.string.next)
                     if (position == 0)
                         binding.floatPrev.visibility = View.GONE
                     else binding.floatPrev.visibility = View.VISIBLE
@@ -49,7 +49,7 @@ class IntroActivity : BindingActivity<IntroBinding>() {
         })
 
         binding.floatNext.setOnClickListener {
-            if (binding.floatNext.text == "البداية") {
+            if (binding.floatNext.text == getString(R.string.startApp)) {
                 AppPreferences.firstRun = true
                 startActivity(Intent(this, MainActivity::class.java))
                 finishAffinity()

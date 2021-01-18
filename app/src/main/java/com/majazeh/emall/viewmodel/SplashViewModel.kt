@@ -22,7 +22,7 @@ class SplashViewModel(private val repo: SplashRepository) : BaseViewModel() {
         getExplode()
     }
 
-    private fun getExplode() {
+    fun getExplode() {
         _loading.value = true
         launch {
             val res = withContext(Dispatchers.IO) {

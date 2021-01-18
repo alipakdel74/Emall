@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ali74.libkot.core.BaseResult
 import com.ali74.libkot.core.BaseViewModel
+import com.majazeh.emall.R
 import com.majazeh.emall.data.api.response.*
 import com.majazeh.emall.pattern.ExplodeSingleton
 import com.majazeh.emall.repository.MainRepository
@@ -13,14 +14,17 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
 
+    private val _toast = MutableLiveData<Int>()
+    val toast: LiveData<Int> = _toast
+
     private val _categories = MutableLiveData<MutableList<Category>>()
     val categories: LiveData<MutableList<Category>> = _categories
 
     private val _posCategory = MutableLiveData<Int>()
     val posCategory: LiveData<Int> = _posCategory
 
-    private val _productsData = MutableLiveData<ProductData>()
-    val productsData: LiveData<ProductData> = _productsData
+    private val _productsData = MutableLiveData<MutableList<Product>>()
+    val productsData: LiveData<MutableList<Product>> = _productsData
 
     private val _productsDataSearch = MutableLiveData<ProductData>()
     val productsDataSearch: LiveData<ProductData> = _productsDataSearch
@@ -73,7 +77,7 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
                 BaseResult.Status.ERROR -> _message.value = res.message!!
                 BaseResult.Status.SUCCESS -> res.data?.apply {
                     if (is_ok)
-                        _productsData.value = this
+                        _productsData.value = data
                     else _message.value = message_text
                 }
             }
@@ -168,7 +172,7 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
                 withContext(Dispatchers.IO) {
                     repo.addProductDB(invoice)
                 }
-                _message.value = "تمت الإضافة إلى عربة التسوق"
+                _toast.value = R.string.successAddToCart
                 _loading.value = false
             }
         } catch (e: Exception) {

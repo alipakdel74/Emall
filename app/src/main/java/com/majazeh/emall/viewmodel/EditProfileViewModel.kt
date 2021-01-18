@@ -51,15 +51,15 @@ class EditProfileViewModel(private val repo: EditProfileRepository) : BaseViewMo
         val password = mPassword.get()
 
         if (name.isNullOrEmpty()) {
-            _toast.value = R.string.invalidName
+            _toast.value = R.string.messageEmptyName
             return
         }
         if (number.isNullOrEmpty()) {
-            _toast.value = R.string.invalidUsername
+            _toast.value = R.string.messageFormatMobile
             return
         }
         if (!formatMobile(number)) {
-            _toast.value = R.string.invalidUsername
+            _toast.value = R.string.messageFormatMobile
             return
         }
         if (!email.isNullOrEmpty() && !email.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+".toRegex())) {
@@ -71,7 +71,7 @@ class EditProfileViewModel(private val repo: EditProfileRepository) : BaseViewMo
             return
         }
         if (password.isNullOrEmpty()) {
-            _toast.value = R.string.invalidPassword
+            _toast.value = R.string.messageEmptyPassword
             return
         }
 
