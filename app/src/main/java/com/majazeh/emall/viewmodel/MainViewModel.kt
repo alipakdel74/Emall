@@ -173,7 +173,7 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
                     repo.addProductDB(invoice)
                 }
                 _loading.value = false
-                _toast.value = R.string.successAddToCart
+                _toast.value = R.string.messageAddToCart
             }
         } catch (e: Exception) {
             _loading.value = false

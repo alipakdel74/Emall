@@ -25,16 +25,17 @@
     <string name="activeLocation">فعال</string>
     <string name="tryAgain">سعی مجدد</string>
 
-    <string name="messageEmptyName">نام خود را وارد نمایید</string>
     <string name="invalidFamily">نام خانوادگی خود را وارد نمایید</string>
     <string name="invalidEmail">ایمیل به درستی وارد نشده است</string>
+    <string name="invalidAddress">آدرس نمی تواند کم تر از 10 کاراکتر باشد</string>
+    <string name="invalidLogin">ابتدا وارد حساب کاربری خود شوید</string>
+    <string name="messageEmptyName">نام خود را وارد نمایید</string>
     <string name="messageFormatMobile">شماره موبایل به درستی وارد نشده است</string>
     <string name="messageEmptyPassword">رمزعبور خود را وارد نمایید</string>
-    <string name="invalidAddress">آدرس نمی تواند کم تر از 10 کاراکتر باشد</string>
-    <string name="successAddToCart">با موفقیت به سبد اضافه شد</string>
     <string name="messageOnLocation">لطفا GPS خود را فعال کنید</string>
     <string name="messageSelectLocation">لطفا مکان خود را روی نقشه انتخاب کنید</string>
     <string name="messageEmptyMobile">تلفن همراه خود را وارد نمایید</string>
+    <string name="messageAddToCart">با موفقیت به سبد اضافه شد</string>
 
     <string name="menu_user">ورود/ثبت نام</string>
     <string name="menu_profile">پروفایل</string>

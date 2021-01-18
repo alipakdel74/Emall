@@ -29,9 +29,9 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
         binding.btnConfirm.setOnClickListener {
             if (isLogin)
                 startActivity(Intent(this, MapsActivity::class.java))
-            else SnackBarBuilder("تسجيل الدخول للشراء")
+            else SnackBarBuilder(getString(R.string.invalidLogin))
                 .setDuration(3000)
-                .setActionText("تسجیل الدخول", R.color.primaryColor)
+                .setActionText(getString(R.string.signIn), R.color.primaryColor)
                 .setAction {
                     startActivity(Intent(this, LoginActivity::class.java))
                 }
