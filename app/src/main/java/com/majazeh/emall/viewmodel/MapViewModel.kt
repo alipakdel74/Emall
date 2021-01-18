@@ -24,7 +24,8 @@ class MapViewModel(private val repo: MapRepository) : BaseViewModel() {
                 BaseResult.Status.ERROR -> _message.value = res.message!!
                 BaseResult.Status.SUCCESS -> res.data?.apply {
                     _closeCart.value = is_ok
-                    _message.value = message_text
+                    if (!is_ok)
+                        _message.value = message_text
                 }
             }
             _loading.value = false

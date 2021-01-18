@@ -57,6 +57,14 @@ class MapsActivity : BindingActivity<MapBinding>(), OnMapReadyCallback {
         vm.message.observe(this, {
             SnackBarBuilder(it).show(this)
         })
+        vm.closeCart.observe(this, {
+            if (it) {
+                val intent = Intent()
+                intent.putExtra("changeData", true)
+                setResult(RESULT_OK, intent)
+                finish()
+            }
+        })
 
     }
 
@@ -83,7 +91,7 @@ class MapsActivity : BindingActivity<MapBinding>(), OnMapReadyCallback {
             myLocation = ""
             mMap.clear()
             myLocation = "${it.latitude},${it.longitude}"
-            mMap.addMarker(MarkerOptions().position(LatLng(it.latitude,it.longitude)))
+            mMap.addMarker(MarkerOptions().position(LatLng(it.latitude, it.longitude)))
         }
     }
 
@@ -99,7 +107,10 @@ class MapsActivity : BindingActivity<MapBinding>(), OnMapReadyCallback {
                     finish()
                 }.setPositiveButton(R.string.activeLocation) { dialog, _ ->
                     dialog.dismiss()
-                    startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),REQUEST_SETTING)
+                    startActivityForResult(
+                        Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),
+                        REQUEST_SETTING
+                    )
                 }.create().show()
         else gotoMyLocation()
     }

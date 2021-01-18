@@ -28,7 +28,7 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
 
         binding.btnConfirm.setOnClickListener {
             if (isLogin)
-                startActivity(Intent(this, MapsActivity::class.java))
+                startActivityForResult(Intent(this, MapsActivity::class.java), 0)
             else SnackBarBuilder(getString(R.string.invalidLogin))
                 .setDuration(3000)
                 .setActionText(getString(R.string.signIn), R.color.primaryColor)
@@ -89,6 +89,14 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK)
+            data?.let {
+                if (it.getBooleanExtra("changeData", false)) finish()
+            }
     }
 
 }

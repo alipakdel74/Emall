@@ -139,7 +139,7 @@ class MainActivity : BindingActivity<MainBinding>() {
 
             binding.appBarMain.viewpager.adapter =
                 ViewPagerAdapter(supportFragmentManager, fragments)
-            binding.appBarMain.viewpager.offscreenPageLimit = fragments.size
+            binding.appBarMain.viewpager.offscreenPageLimit = 1
             binding.appBarMain.viewpager.currentItem = 0
         })
 
