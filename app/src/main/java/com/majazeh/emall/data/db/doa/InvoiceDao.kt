@@ -21,24 +21,35 @@ interface InvoiceDao {
     @Query("DELETE FROM tbl_invoice")
     suspend fun deleteAll(): Int
 
-
     @Query("SELECT SUM(emall_price) FROM tbl_invoice")
-    suspend fun getTotal(): Int?
+    suspend fun getEmallPrice(): Int?
 
-    @Query("SELECT COUNT(id) FROM tbl_invoice")
-    suspend fun getAmountAll(): Int?
+    @Query("SELECT SUM(market_price) FROM tbl_invoice")
+    suspend fun getMarketPrice(): Int?
+
+    @Query("SELECT SUM(count) FROM tbl_invoice")
+    suspend fun getAllNumber(): Int?
+
+    @Query("SELECT SUM(count) FROM tbl_invoice WHERE id = :id")
+    suspend fun getNumber(id: String): Int?
 
     @Query("SELECT * FROM tbl_invoice WHERE id = :id ")
     suspend fun productData(id: String): InvoiceDB?
 
-    @Query("UPDATE tbl_invoice SET count = count+:count  WHERE id = :id ")
+    @Query("UPDATE tbl_invoice SET count = count+1  WHERE id = :id ")
+    suspend fun updateCountList(id: String): Int
+
+    @Query("UPDATE tbl_invoice SET count = :count  WHERE id = :id ")
     suspend fun update(id: String, count: Int): Int
 
     @Transaction
-    suspend fun updateOrAdd(invoiceDB: InvoiceDB) {
+    suspend fun updateOrAdd(invoiceDB: InvoiceDB, isList: Boolean = false) {
         if (productData(invoiceDB.id) == null)
             setInvoice(invoiceDB)
-        else update(invoiceDB.id, invoiceDB.count)
+        else {
+            if (isList) updateCountList(invoiceDB.id)
+            else update(invoiceDB.id, invoiceDB.count)
+        }
     }
 
 }

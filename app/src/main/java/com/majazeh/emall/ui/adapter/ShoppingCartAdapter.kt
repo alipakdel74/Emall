@@ -1,5 +1,6 @@
 package com.majazeh.emall.ui.adapter
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -9,25 +10,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ali74.libkot.BindingViewHolder
 import com.majazeh.emall.R
 import com.majazeh.emall.data.api.response.PreInvoice
-import com.majazeh.emall.databinding.ItemInvoicePreBinding
 import com.majazeh.emall.databinding.ItemShoppingCartBinding
-import com.majazeh.emall.model.CartType
 import com.majazeh.emall.ui.activity.DetailActivity
 import com.majazeh.emall.viewmodel.ShoppingCartViewModel
 
 class ShoppingCartAdapter(
+    private val activity: Activity,
     private var models: MutableList<PreInvoice>,
-    private val vm: ShoppingCartViewModel,
-    private val type: CartType
+    private val vm: ShoppingCartViewModel
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        if (type == CartType.SHOPPING)
-            ShoppingCartHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_shopping_cart, parent, false)
-            )
-        else PreInvoiceHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_invoice_pre, parent, false)
+        ShoppingCartHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_shopping_cart, parent, false)
         )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -50,20 +45,15 @@ class ShoppingCartAdapter(
                     )
                 )
             holder.itemView.setOnClickListener {
-                holder.itemView.context.startActivity(
+                activity.startActivityForResult(
                     Intent(
                         holder.itemView.context,
                         DetailActivity::class.java
-                    ).putExtra("data", models[position].product)
+                    ).putExtra("data", models[position].product), 0
                 )
             }
         }
 
-        if (holder is PreInvoiceHolder) {
-            holder.binding.invoice = models[position]
-            holder.binding.position = position
-            holder.binding.vm = vm
-        }
     }
 
     override fun getItemCount(): Int = models.size
@@ -75,6 +65,5 @@ class ShoppingCartAdapter(
     }
 
     private class ShoppingCartHolder(view: View) : BindingViewHolder<ItemShoppingCartBinding>(view)
-    private class PreInvoiceHolder(view: View) : BindingViewHolder<ItemInvoicePreBinding>(view)
 
 }

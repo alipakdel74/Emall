@@ -17,7 +17,7 @@
 
         <variable
             name="vm"
-            type="com.majazeh.emall.viewmodel.ShoppingCartViewModel" />
+            type="com.majazeh.emall.viewmodel.PreInvoiceViewModel" />
 
     </data>
 
@@ -86,6 +86,7 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtAmount"
+                    app:paintFlag="@{true}"
                     tools:text="تخفیف" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -123,6 +124,7 @@
                     android:layout_marginStart="8dp"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="@{() -> vm.closeCart(invoice.id)}"
                     android:text="@string/delete"
                     android:textColor="@color/white"
                     android:textSize="12sp"
@@ -131,9 +133,28 @@
                     app:cornerRadius="16dp"
                     app:icon="@drawable/ic_trash"
                     app:iconGravity="end"
-                    android:onClick="@{() -> vm.closeCart(invoice.id)}"
                     app:iconSize="16dp"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtPriceMarket"
+                    app:rippleColor="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="@string/edit"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/primaryColor"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_edit"
+                    app:iconGravity="end"
+                    app:iconSize="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/btnDelete"
                     app:layout_constraintTop_toBottomOf="@+id/txtPriceMarket"
                     app:rippleColor="@color/white" />
 

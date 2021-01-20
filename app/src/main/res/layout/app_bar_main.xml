@@ -77,16 +77,18 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/fab_margin"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/app_logo_basket"
+                android:gravity="center"
+                app:cornerRadius="16dp"
+                android:textColor="@color/white"
                 app:backgroundTint="@color/primaryColor"
-                app:tint="@color/white" />
+                app:icon="@drawable/app_logo_basket"
+                app:iconTint="@color/white" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -104,12 +106,12 @@
                 android:background="@android:color/transparent"
                 android:focusable="false"
                 android:gravity="right|center"
-                android:paddingLeft="48dp"
-                android:paddingTop="8dp"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
                 android:maxLength="50"
                 android:maxLines="1"
-                android:inputType="text"
-                android:imeOptions="actionSearch"
+                android:paddingLeft="48dp"
+                android:paddingTop="8dp"
                 android:paddingRight="48dp"
                 android:paddingBottom="8dp"
                 android:textColor="@color/black"
@@ -158,13 +160,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:gravity="center"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/messageNotFond"
                 android:padding="8dp"
-                android:visibility="gone"
+                android:text="@string/messageNotFond"
                 android:textColor="@color/medium"
                 android:textSize="15sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ProgressBar
                 android:id="@+id/prbLazyLoad"

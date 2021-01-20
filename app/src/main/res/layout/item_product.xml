@@ -16,7 +16,6 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
         app:cardCornerRadius="8dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true">
@@ -24,13 +23,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp">
+            android:paddingBottom="4dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivProduct"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_height="120dp"
-                android:scaleType="centerCrop"
                 app:imageUrl="@{item.imageUrl.original}"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,6 +44,7 @@
                 android:minLines="2"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
+                android:layout_marginTop="4dp"
                 android:text="@{item.title}"
                 android:textColor="@color/black"
                 android:textSize="12sp"

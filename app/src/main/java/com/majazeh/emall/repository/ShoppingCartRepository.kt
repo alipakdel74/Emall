@@ -8,12 +8,10 @@ import com.majazeh.emall.utils.AppPreferences
 class ShoppingCartRepository(private val api: DataApi, private val dao: InvoiceDao) :
     BaseDataSource() {
     suspend fun getProductDB() = dao.getAll()
-    suspend fun getTotal() = dao.getTotal()
-    suspend fun getAmountAll() = dao.getAmountAll()
-    suspend fun deleteAll() = dao.deleteAll()
+    suspend fun getEmallPrice() = dao.getEmallPrice()
+    suspend fun getMarketPrice() = dao.getMarketPrice()
+    suspend fun getAmountNumber() = dao.getAllNumber()
     suspend fun deleteCartDB(id: String) = dao.deleteInvoice(id)
-    suspend fun deleteCart(id: String) = getResult { api.deleteCart(AppPreferences.auth, id) }
-    suspend fun cart() = getResult { api.cart(AppPreferences.auth) }
     suspend fun addProduct(id: String, count: Int) =
         getResult { api.addCart(AppPreferences.auth, id, count) }
 }

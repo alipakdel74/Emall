@@ -66,7 +66,7 @@ class EditProfileViewModel(private val repo: EditProfileRepository) : BaseViewMo
             _toast.value = R.string.invalidEmail
             return
         }
-        if (!address.isNullOrEmpty() && address.length < 10) {
+        if (!address.isNullOrEmpty() && address.length < 5) {
             _toast.value = R.string.invalidAddress
             return
         }
@@ -78,7 +78,7 @@ class EditProfileViewModel(private val repo: EditProfileRepository) : BaseViewMo
         _loading.value = true
         launch {
             val res = withContext(Dispatchers.IO) {
-                repo.edit(name, number, email ?: "", address ?: "", password)
+                repo.edit(name, number, email ?: "", address ?: "", password.toInt())
             }
             when (res.status) {
                 BaseResult.Status.ERROR -> _message.value = res.message!!

@@ -16,6 +16,7 @@ val viewModelModule = module {
     viewModel { DetailViewModel(get()) }
     viewModel { InvoiceViewModel(get()) }
     viewModel { MapViewModel(get()) }
+    viewModel { PreInvoiceViewModel(get()) }
 }
 
 val repositoryModule = module {
@@ -28,5 +29,6 @@ val repositoryModule = module {
     single { DetailRepository(get(), get()) }
     single { InvoiceRepository(get()) }
     single { MapRepository(get()) }
+    single { PreInvoiceRepository(get()) }
 }
 

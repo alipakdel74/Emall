@@ -27,7 +27,7 @@
 
     <string name="invalidFamily">نام خانوادگی خود را وارد نمایید</string>
     <string name="invalidEmail">ایمیل به درستی وارد نشده است</string>
-    <string name="invalidAddress">آدرس نمی تواند کم تر از 10 کاراکتر باشد</string>
+    <string name="invalidAddress">آدرس خود را روی نقشه انتخاب کنید</string>
     <string name="invalidLogin">ابتدا وارد حساب کاربری خود شوید</string>
     <string name="messageEmptyName">نام خود را وارد نمایید</string>
     <string name="messageFormatMobile">شماره موبایل به درستی وارد نشده است</string>
@@ -56,5 +56,10 @@
     <string name="invoiceItem_discount">تخفیف</string>
     <string name="invoiceItem_total">مجموع</string>
     <string name="invoiceItem_date">تاریخ</string>
+    <string name="questionEndShopp">آیا از نهایی کردن خرید خود اطمینان دارید؟</string>
+    <string name="messageEndShopping">خرید شما انجام شد. با شما تماس میگیریم</string>
+    <string name="changeAddress">تغییر آدرس</string>
+    <string name="selectAddress">انتخاب آدرس</string>
+    <string name="edit">ویرایش</string>
 
 </resources>

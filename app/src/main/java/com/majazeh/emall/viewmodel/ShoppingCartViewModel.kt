@@ -1,6 +1,5 @@
 package com.majazeh.emall.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ali74.libkot.core.BaseResult
@@ -26,45 +25,22 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
     private val _isLogin = MutableLiveData<Boolean>()
     val isLogin: LiveData<Boolean> = _isLogin
 
+    private val _addPreInvoice = MutableLiveData<Boolean>()
+    val addPreInvoice: LiveData<Boolean> = _addPreInvoice
+
     private val data = ExplodeSingleton.getInstance()
 
     init {
-        shoppingCart()
-    }
-
-    fun closeCart(id: String) {
         data?.apply {
             explode?.apply {
-                if (version.login)
-                    cart?.apply {
-                        deleteCart(id)
-                        return
-                    }
+                _isLogin.value = version.login
             }
         }
-        deleteCartDB(id)
+
+        shoppingCartDB()
     }
 
-    private fun deleteCart(id: String) {
-        _loading.value = true
-        launch {
-            val res = withContext(Dispatchers.IO) {
-                repo.deleteCart(id)
-            }
-
-            when (res.status) {
-                BaseResult.Status.ERROR -> _message.value = res.message
-                BaseResult.Status.SUCCESS -> res.data?.apply {
-                    _closeCart.value = is_ok
-                    _message.value = message_text
-                }
-            }
-
-            _loading.value = false
-        }
-    }
-
-    private fun deleteCartDB(id: String) {
+    fun deleteCartDB(id: String) {
         _loading.value = true
         launch {
             val res = withContext(Dispatchers.IO) {
@@ -76,45 +52,19 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
         }
     }
 
-    fun shoppingCart() {
-        data?.apply {
-            explode?.apply {
-                _isLogin.value = version.login
-                shoppingCartDB(this.version.login)
-            }
-        }
-    }
-
-    private fun cart() {
-        _loading.value = true
-        launch {
-            val res = withContext(Dispatchers.IO) {
-                repo.cart()
-            }
-
-            when (res.status) {
-                BaseResult.Status.ERROR -> _message.value = res.message
-                BaseResult.Status.SUCCESS -> res.data?.apply {
-                    if (is_ok)
-                        _cart.value = data
-                    else _message.value = message_text
-                }
-            }
-            _loading.value = false
-        }
-    }
-
-    private fun shoppingCartDB(login: Boolean) {
+    fun shoppingCartDB() {
         launch {
             val res = withContext(Dispatchers.IO) {
                 repo.getProductDB()
             }
-
-            val total = withContext(Dispatchers.IO) {
-                repo.getTotal()
+            val emallParice = withContext(Dispatchers.IO) {
+                repo.getEmallPrice()
             }
-            val amount = withContext(Dispatchers.IO) {
-                repo.getAmountAll()
+            val marketPrice = withContext(Dispatchers.IO) {
+                repo.getMarketPrice()
+            }
+            val total = withContext(Dispatchers.IO) {
+                repo.getAmountNumber()
             }
 
             res?.let {
@@ -133,35 +83,39 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
                         it.discount,
                     )
                     invoices.add(invoice)
-
-                    if (login)
-                        addCart(it.id, it.count)
                 }
 
-                if (login) {
-                    val deleteAll = withContext(Dispatchers.IO) {
-                        repo.deleteAll()
-                    }
-                    if (deleteAll != 1)
-                        Log.i("Error", "deleteAll")
-                    cart()
-                } else {
-                    val shop = ShoppingCart(
-                        "0",
-                        0,
-                        total ?: 0,
-                        0,
-                        "",
-                        "",
-                        invoices.size,
-                        amount ?: 0,
-                        "",
-                        "",
-                        invoices
-                    )
-                    _cart.value = shop
+                val shop = ShoppingCart(
+                    "0",
+                    marketPrice ?: 0,
+                    emallParice ?: 0,
+                    0,
+                    "",
+                    "",
+                    invoices.size,
+                    total ?: 0,
+                    "",
+                    "",
+                    invoices
+                )
+                _cart.value = shop
+            }
+            _loading.value = false
+        }
+    }
+
+    fun addPreInvoice() {
+        _loading.value = true
+        launch {
+            val res = withContext(Dispatchers.IO) {
+                repo.getProductDB()
+            }
+            res?.let {
+                res.forEach {
+                    addCart(it.id, it.count)
                 }
             }
+            _addPreInvoice.value = true
             _loading.value = false
         }
     }
@@ -176,6 +130,7 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
                 BaseResult.Status.ERROR -> _message.value = res.message!!
                 BaseResult.Status.SUCCESS -> res.data?.apply {
                     if (!is_ok) _message.value = message_text
+                    else deleteCartDB(id)
                 }
             }
             _loading.value = false

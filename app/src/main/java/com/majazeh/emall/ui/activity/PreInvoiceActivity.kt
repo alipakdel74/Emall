@@ -1,5 +1,6 @@
 package com.majazeh.emall.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -8,14 +9,13 @@ import com.ali74.libkot.BindingActivity
 import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.majazeh.emall.R
 import com.majazeh.emall.databinding.PreInvoiceBinding
-import com.majazeh.emall.model.CartType
-import com.majazeh.emall.ui.adapter.ShoppingCartAdapter
-import com.majazeh.emall.viewmodel.ShoppingCartViewModel
+import com.majazeh.emall.ui.adapter.PreInvoiceAdapter
+import com.majazeh.emall.viewmodel.PreInvoiceViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PreInvoiceActivity : BindingActivity<PreInvoiceBinding>() {
 
-    private val vm by viewModel<ShoppingCartViewModel>()
+    private val vm by viewModel<PreInvoiceViewModel>()
 
     override fun getLayoutResId(): Int = R.layout.activity_pre_invoice
 
@@ -37,19 +37,20 @@ class PreInvoiceActivity : BindingActivity<PreInvoiceBinding>() {
             if (it.details.isNullOrEmpty()) {
                 binding.txtNull.visibility = View.VISIBLE
                 binding.cardDetail.visibility = View.GONE
+                binding.rclInvoice.visibility = View.GONE
             } else {
                 binding.txtNull.visibility = View.GONE
                 binding.cardDetail.visibility = View.VISIBLE
+                binding.rclInvoice.visibility = View.VISIBLE
                 if (binding.rclInvoice.adapter == null)
-                    binding.rclInvoice.adapter =
-                        ShoppingCartAdapter(it.details, vm, CartType.INVOICE)
+                    binding.rclInvoice.adapter = PreInvoiceAdapter(this, it.details, vm)
                 else
-                    (binding.rclInvoice.adapter as ShoppingCartAdapter).refresh(it.details)
+                    (binding.rclInvoice.adapter as PreInvoiceAdapter).refresh(it.details)
             }
         })
+
         vm.closeCart.observe(this, {
-            if (it)
-                vm.shoppingCart()
+            if (it) vm.cart()
         })
 
     }
@@ -68,5 +69,11 @@ class PreInvoiceActivity : BindingActivity<PreInvoiceBinding>() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == 1006)
+            if (data!!.getBooleanExtra("changeData", false))
+                vm.cart()
+    }
 
 }

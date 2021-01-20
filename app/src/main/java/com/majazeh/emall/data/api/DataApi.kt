@@ -37,7 +37,7 @@ interface DataApi {
         @Field("number") number: String,
         @Field("email") email: String,
         @Field("address") address: String,
-        @Field("password") password: String
+        @Field("password") password: Int
     ): Response<EditMe>
 
     @FormUrlEncoded

@@ -309,4 +309,20 @@ class MainActivity : BindingActivity<MainBinding>() {
         vm.getUser()
     }
 
+    override fun onAttachFragment(fragment: Fragment) {
+        super.onAttachFragment(fragment)
+        if (fragment is MainFragment)
+            fragment.onclickAddToBasket(object : MainFragment.AddToBasket {
+                override fun onclick(count: Int) {
+                    binding.appBarMain.fab.text = count.toString()
+                    runOnUiThread {
+                        if (count == 0)
+                            binding.appBarMain.fab.shrink()
+                        else
+                            binding.appBarMain.fab.extend()
+                    }
+                }
+            })
+    }
+
 }

@@ -2,6 +2,7 @@ package com.majazeh.emall.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.ali74.libkot.BindingFragment
 import com.majazeh.emall.R
 import com.majazeh.emall.data.api.response.Category
@@ -13,6 +14,7 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
 class MainFragment : BindingFragment<MainFragmentBinding>() {
 
     private var category: Category? = null
+    private lateinit var addToBasket: AddToBasket
 
     override fun getLayoutResId(): Int = R.layout.fragment_main
 
@@ -50,6 +52,24 @@ class MainFragment : BindingFragment<MainFragmentBinding>() {
             binding.viewpager.offscreenPageLimit = 1
             binding.viewpager.currentItem = size - 1
         }
+    }
+
+    override fun onAttachFragment(childFragment: Fragment) {
+        super.onAttachFragment(childFragment)
+        if (childFragment is SubMainFragment)
+            childFragment.onclickAddToBasket(object : SubMainFragment.AddToBasket {
+                override fun onclick(count: Int) {
+                    addToBasket.onclick(count)
+                }
+            })
+    }
+
+    interface AddToBasket {
+        fun onclick(count: Int)
+    }
+
+    fun onclickAddToBasket(addToBasket: AddToBasket) {
+        this.addToBasket = addToBasket
     }
 
 

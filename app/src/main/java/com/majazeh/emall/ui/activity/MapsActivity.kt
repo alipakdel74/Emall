@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import com.ali74.libkot.BindingActivity
+import com.ali74.libkot.patternBuilder.MessageDialogBuilder
 import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.majazeh.emall.R
 import com.majazeh.emall.databinding.MapBinding
+import com.majazeh.emall.ui.adapter.InvoiceDetailAdapter
 import com.majazeh.emall.viewmodel.MapViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -33,21 +35,41 @@ class MapsActivity : BindingActivity<MapBinding>(), OnMapReadyCallback {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     private var myLocation = ""
+    private var latitude = 0.0
+    private var longitude = 0.0
 
     override fun getLayoutResId(): Int = R.layout.activity_maps
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (intent.hasExtra("userAddress")) {
+            latitude = intent.getDoubleExtra("latitude", 0.0)
+            longitude = intent.getDoubleExtra("longitude", 0.0)
+        } else {
+            vm.me.observe(this, {
+                it.address?.apply {
+                    myLocation = this
+                    latitude = this.substring(0, this.lastIndexOf(",")).toDouble()
+                    longitude = this.substring(this.indexOf(",") + 1, this.length).toDouble()
+                }
+            })
+        }
+
         binding.btnConfirm.setOnClickListener {
-            if (myLocation.isNotEmpty())
-                vm.closeCart(myLocation)
-            else SnackBarBuilder(getString(R.string.messageSelectLocation)).show(this)
+            if (myLocation.isNotEmpty()) {
+                if (intent.hasExtra("userAddress")) {
+                    val intent = Intent()
+                    intent.putExtra("latitude", latitude)
+                    intent.putExtra("longitude", longitude)
+                    setResult(RESULT_OK, intent)
+                    finish()
+                } else vm.cart()
+            } else SnackBarBuilder(getString(R.string.messageSelectLocation)).show(this)
         }
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
 
         vm.isLoading.observe(this, {
             if (it)
@@ -59,17 +81,37 @@ class MapsActivity : BindingActivity<MapBinding>(), OnMapReadyCallback {
         })
         vm.closeCart.observe(this, {
             if (it) {
-                val intent = Intent()
-                intent.putExtra("changeData", true)
-                setResult(RESULT_OK, intent)
-                finish()
+                MessageDialogBuilder(this)
+                    .setMessage(getString(R.string.messageEndShopping))
+                    .setBtnConfirm(getString(R.string.confirm), R.color.green)
+                    .setIconToolbar(R.drawable.ic_done, R.color.primaryColor)
+                    .setOnclickBtn {
+                        finish()
+                    }.create().show()
             }
+        })
+
+        vm.cart.observe(this, {
+            MaterialAlertDialogBuilder(this)
+                .setAdapter(InvoiceDetailAdapter(it?.details ?: null!!)) { _, _ -> }
+                .setTitle(R.string.questionEndShopp)
+                .setNeutralButton(R.string.closeDialog) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(R.string.confirm) { dialog, _ ->
+                    dialog.dismiss()
+                    vm.closeCart(myLocation)
+                }.create().show()
         })
 
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
+        if (latitude != 0.0)
+            mMap.addMarker(MarkerOptions().position(LatLng(latitude, longitude)))
+
         mMap.uiSettings.isMapToolbarEnabled = false
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -92,6 +134,8 @@ class MapsActivity : BindingActivity<MapBinding>(), OnMapReadyCallback {
             mMap.clear()
             myLocation = "${it.latitude},${it.longitude}"
             mMap.addMarker(MarkerOptions().position(LatLng(it.latitude, it.longitude)))
+            latitude = it.latitude
+            longitude = it.longitude
         }
     }
 
@@ -120,18 +164,19 @@ class MapsActivity : BindingActivity<MapBinding>(), OnMapReadyCallback {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         mMap.isMyLocationEnabled = true
         val locationResult = fusedLocationProviderClient.lastLocation
-        locationResult.addOnCompleteListener(this) { task ->
-            if (task.isSuccessful) {
-                val lastKnownLocation = task.result
-                if (lastKnownLocation != null) {
-                    mMap.moveCamera(
-                        CameraUpdateFactory.newLatLngZoom(
-                            LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude), 17f
+        if (latitude == 0.0)
+            locationResult.addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val lastKnownLocation = task.result
+                    if (lastKnownLocation != null) {
+                        mMap.moveCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude), 17f
+                            )
                         )
-                    )
+                    }
                 }
             }
-        }
     }
 
     override fun onRequestPermissionsResult(

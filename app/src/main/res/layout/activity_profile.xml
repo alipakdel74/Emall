@@ -50,8 +50,8 @@
             android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="3dp"
             app:cardPreventCornerOverlap="false"
@@ -68,7 +68,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivUser"
                     android:layout_width="0dp"
-                    android:layout_height="140dp"
+                    android:layout_height="120dp"
                     android:background="@color/backgroundLightColor"
                     android:padding="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -131,8 +131,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivMobile"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:padding="8dp"
                     app:layout_constraintEnd_toEndOf="@id/txtMobile"
@@ -142,23 +142,26 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtMobile"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="16dp"
                     android:gravity="center"
+                    android:maxLines="2"
+                    android:minLines="2"
                     android:padding="8dp"
                     android:text="@{user.username == null ? user.mobile : user.username}"
                     android:textColor="@color/medium"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivMobile" />
+                    app:layout_constraintTop_toBottomOf="@id/ivMobile"
+                    app:layout_constraintWidth_percent="0.45" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivEmail"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:padding="8dp"
                     app:layout_constraintEnd_toEndOf="@id/txtEmail"
@@ -168,18 +171,21 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtEmail"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginBottom="16dp"
                     android:gravity="center"
+                    android:maxLines="2"
+                    android:minLines="2"
                     android:padding="8dp"
                     android:text='@{user.email == null ? "" : user.email}'
                     android:textColor="@color/medium"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivEmail" />
+                    app:layout_constraintTop_toBottomOf="@id/ivEmail"
+                    app:layout_constraintWidth_percent="0.45" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

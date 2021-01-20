@@ -12,10 +12,9 @@ class MainRepository(private var api: DataApi, private val dao: InvoiceDao) : Ba
         getResult { api.products(AppPreferences.auth, page, q, cat, brand) }
 
     suspend fun logout() = getResult { api.logOut(AppPreferences.auth) }
-    suspend fun addProduct(id: String, count: Int) =
-        getResult { api.addCart(AppPreferences.auth, id, count) }
+    suspend fun getCountAll() = dao.getAllNumber()
 
-    suspend fun addProductDB(invoice: PreInvoice) = dao.updateOrAdd(InvoiceDB.to(invoice))
+    suspend fun addProductDB(invoice: PreInvoice) = dao.updateOrAdd(InvoiceDB.to(invoice), true)
     suspend fun request(title: String, desc: String) =
         getResult { api.requests(AppPreferences.auth, title, desc) }
 }

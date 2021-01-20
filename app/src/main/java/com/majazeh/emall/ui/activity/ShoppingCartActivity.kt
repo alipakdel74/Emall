@@ -9,7 +9,6 @@ import com.ali74.libkot.BindingActivity
 import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.majazeh.emall.R
 import com.majazeh.emall.databinding.ShoppingCartBinding
-import com.majazeh.emall.model.CartType
 import com.majazeh.emall.ui.adapter.ShoppingCartAdapter
 import com.majazeh.emall.viewmodel.ShoppingCartViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -28,7 +27,7 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
 
         binding.btnConfirm.setOnClickListener {
             if (isLogin)
-                startActivityForResult(Intent(this, MapsActivity::class.java), 0)
+                vm.addPreInvoice()
             else SnackBarBuilder(getString(R.string.invalidLogin))
                 .setDuration(3000)
                 .setActionText(getString(R.string.signIn), R.color.primaryColor)
@@ -37,6 +36,13 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
                 }
                 .show(this)
         }
+
+        vm.addPreInvoice.observe(this, {
+            if (it) {
+                startActivity(Intent(this, MapsActivity::class.java))
+                finish()
+            }
+        })
 
         vm.cart.observe(this, {
             binding.cart = it
@@ -50,8 +56,7 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
                 binding.constrainDetail.visibility = View.VISIBLE
                 binding.rclShopping.visibility = View.VISIBLE
                 if (binding.rclShopping.adapter == null)
-                    binding.rclShopping.adapter =
-                        ShoppingCartAdapter(it.details, vm, CartType.SHOPPING)
+                    binding.rclShopping.adapter = ShoppingCartAdapter(this, it.details, vm)
                 else
                     (binding.rclShopping.adapter as ShoppingCartAdapter).refresh(it.details)
             }
@@ -71,8 +76,7 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
             SnackBarBuilder(it).show(this)
         })
         vm.closeCart.observe(this, {
-            if (it)
-                vm.shoppingCart()
+            if (it) vm.shoppingCartDB()
         })
 
     }
@@ -93,10 +97,9 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK)
-            data?.let {
-                if (it.getBooleanExtra("changeData", false)) finish()
-            }
+        if (resultCode == 1006)
+            if (data!!.getBooleanExtra("changeData", false))
+                vm.shoppingCartDB()
     }
 
 }

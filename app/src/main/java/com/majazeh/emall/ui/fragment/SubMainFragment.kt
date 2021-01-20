@@ -18,6 +18,8 @@ class SubMainFragment : BindingFragment<SubMainBinding>() {
 
     private val vm by viewModel<MainViewModel>()
 
+    private lateinit var addToBasket: AddToBasket
+
     private var adapter: ProductAdapter? = null
     private var idCategory = 0
     private var pageaction = 1
@@ -84,6 +86,14 @@ class SubMainFragment : BindingFragment<SubMainBinding>() {
         vm.message.observe(this, {
             SnackBarBuilder(it).show(requireActivity())
         })
+        vm.counterProduct.observe(this, {
+            addToBasket.onclick(it)
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        vm.getCountAll()
     }
 
     companion object {
@@ -95,6 +105,14 @@ class SubMainFragment : BindingFragment<SubMainBinding>() {
             SubMainFragment()
             return Bundler().putInt(CAT_ID, idCategory).get()
         }
+    }
+
+    interface AddToBasket {
+        fun onclick(count: Int)
+    }
+
+    fun onclickAddToBasket(addToBasket: AddToBasket) {
+        this.addToBasket = addToBasket
     }
 
 }

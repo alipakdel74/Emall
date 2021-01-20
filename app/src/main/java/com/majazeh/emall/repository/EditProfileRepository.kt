@@ -10,6 +10,6 @@ class EditProfileRepository(private val api: DataApi) : BaseDataSource() {
         number: String,
         email: String,
         address: String,
-        password: String
+        password: Int
     ) = getResult { api.editProfile(AppPreferences.auth, name, number, email, address, password) }
 }

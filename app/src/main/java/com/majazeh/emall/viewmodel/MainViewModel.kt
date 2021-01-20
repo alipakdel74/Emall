@@ -44,6 +44,9 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
     private val _lazyLoad = MutableLiveData<Boolean>()
     val lazyLoad: LiveData<Boolean> = _lazyLoad
 
+    private val _counterProduct = MutableLiveData<Int>()
+    val counterProduct: LiveData<Int> = _counterProduct
+
     private val data = ExplodeSingleton.getInstance()
 
     init {
@@ -146,12 +149,26 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
                 }
                 _loading.value = false
                 _toast.value = R.string.messageAddToCart
+
+                getCountAll()
             }
         } catch (e: Exception) {
             _loading.value = false
             _message.value = e.message!!
         }
 
+    }
+
+    fun getCountAll() {
+        launch {
+            val res = withContext(Dispatchers.IO) {
+                repo.getCountAll()
+            }
+            if (res == null)
+                _counterProduct.value = 0
+            else
+                _counterProduct.value = res
+        }
     }
 
     fun request(title: String, desc: String) {
