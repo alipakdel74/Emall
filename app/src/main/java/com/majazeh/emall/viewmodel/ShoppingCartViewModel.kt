@@ -115,9 +115,7 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
                     addCart(it.id, it.count)
                 }
             }
-            if (res.isNullOrEmpty())
-                _addPreInvoice.value = true
-            else addPreInvoice()
+            _addPreInvoice.value = true
             _loading.value = false
         }
     }
@@ -126,7 +124,7 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
         _loading.value = true
         launch {
             val res = withContext(Dispatchers.IO) {
-                repo.addProduct(id, count)
+                repo.addProduct(id, count.toString())
             }
             when (res.status) {
                 BaseResult.Status.ERROR -> _message.value = res.message!!

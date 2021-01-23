@@ -12,6 +12,6 @@ class ShoppingCartRepository(private val api: DataApi, private val dao: InvoiceD
     suspend fun getMarketPrice() = dao.getMarketPrice()
     suspend fun getAmountNumber() = dao.getAllNumber()
     suspend fun deleteCartDB(id: String) = dao.deleteInvoice(id)
-    suspend fun addProduct(id: String, count: Int) =
+    suspend fun addProduct(id: String, count: String) =
         getResult { api.addCart(AppPreferences.auth, id, count) }
 }

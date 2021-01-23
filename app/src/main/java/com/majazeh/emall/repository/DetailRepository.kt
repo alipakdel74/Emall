@@ -8,7 +8,7 @@ import com.majazeh.emall.data.db.entity.InvoiceDB
 import com.majazeh.emall.utils.AppPreferences
 
 class DetailRepository(private val api: DataApi, private val dao: InvoiceDao) : BaseDataSource() {
-    suspend fun addProduct(id: String, count: Int) =
+    suspend fun addProduct(id: String, count: String) =
         getResult { api.addCart(AppPreferences.auth, id, count) }
 
     suspend fun addProductDB(invoice: PreInvoice) = dao.updateOrAdd(InvoiceDB.to(invoice))
