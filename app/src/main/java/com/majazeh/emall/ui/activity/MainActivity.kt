@@ -20,10 +20,12 @@ import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.ali74.libkot.recyclerview.EndlessRVScroll
 import com.ali74.libkot.utils.hideKeyboard
 import com.ali74.libkot.utils.showKeyboard
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.majazeh.emall.R
 import com.majazeh.emall.databinding.MainBinding
 import com.majazeh.emall.ui.adapter.CategoryAdapter
 import com.majazeh.emall.ui.adapter.ProductAdapter
+import com.majazeh.emall.ui.adapter.ProfileAdapter
 import com.majazeh.emall.ui.dialog.QuestionDialog
 import com.majazeh.emall.ui.fragment.MainFragment
 import com.majazeh.emall.utils.AppPreferences
@@ -36,6 +38,7 @@ class MainActivity : BindingActivity<MainBinding>() {
     private val vm by viewModel<MainViewModel>()
     private var pageactionSearch = 1
     private var adapter: ProductAdapter? = null
+    private val profileDialog by lazy { MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme) }
 
     private val questionDialog by lazy { QuestionDialog(this) }
 
@@ -67,7 +70,8 @@ class MainActivity : BindingActivity<MainBinding>() {
                     startActivity(Intent(this, LoginActivity::class.java))
                 }
                 R.id.nav_profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
+                    profileDialog.show()
+//                    startActivity(Intent(this, ProfileActivity::class.java))
                 }
                 R.id.nav_content -> {
                     startActivity(Intent(this, ContentActivity::class.java))
@@ -124,6 +128,16 @@ class MainActivity : BindingActivity<MainBinding>() {
                 binding.navView.getHeaderView(0)
                     .findViewById<AppCompatTextView>(R.id.username).text = mobile
             }
+            profileDialog.setTitle(it?.name).setIcon(R.drawable.ic_profile_user)
+                .setAdapter(ProfileAdapter(mutableListOf(
+                    Pair(it?.mobile ?: "", R.drawable.ic_mobile),
+                    Pair(it?.email ?: "", R.drawable.ic_email)))
+                ) { _, _ -> }
+                .setNeutralButton(R.string.closeDialog) { dialog, _ -> dialog.dismiss() }
+                .setPositiveButton(R.string.edit) { dialog, _ ->
+                    dialog.dismiss()
+                    startActivity(Intent(this, EditProfileActivity::class.java))
+                }.create()
         })
 
         vm.request.observe(this, {

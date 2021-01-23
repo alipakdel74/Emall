@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import com.ali74.libkot.BindingActivity
-import com.ali74.libkot.patternBuilder.MessageDialogBuilder
 import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -23,7 +22,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.majazeh.emall.R
 import com.majazeh.emall.databinding.MapBinding
-import com.majazeh.emall.ui.adapter.InvoiceDetailAdapter
 import com.majazeh.emall.viewmodel.MapViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -64,7 +62,7 @@ class MapsActivity : BindingActivity<MapBinding>(), OnMapReadyCallback {
                     intent.putExtra("longitude", longitude)
                     setResult(RESULT_OK, intent)
                     finish()
-                } else vm.cart()
+                } else vm.cart(intent.getParcelableExtra("data")!!)
             } else SnackBarBuilder(getString(R.string.messageSelectLocation)).show(this)
         }
 
@@ -81,20 +79,23 @@ class MapsActivity : BindingActivity<MapBinding>(), OnMapReadyCallback {
         })
         vm.closeCart.observe(this, {
             if (it) {
-                MessageDialogBuilder(this)
+                MaterialAlertDialogBuilder(this,
+                    R.style.AlertDialogTheme)
+                    .setCancelable(false)
                     .setMessage(getString(R.string.messageEndShopping))
-                    .setBtnConfirm(getString(R.string.confirm), R.color.green)
-                    .setIconToolbar(R.drawable.ic_done, R.color.primaryColor)
-                    .setOnclickBtn {
+                    .setPositiveButton(getString(R.string.confirm)) { dialog, _ ->
+                        dialog.dismiss()
                         finish()
                     }.create().show()
             }
         })
 
         vm.cart.observe(this, {
-            MaterialAlertDialogBuilder(this)
-                .setAdapter(InvoiceDetailAdapter(it?.details ?: null!!)) { _, _ -> }
-                .setTitle(R.string.questionEndShopp)
+            MaterialAlertDialogBuilder(this,
+                R.style.AlertDialogTheme)
+                .setMessage("${getString(R.string.amount)} :  ${it.total} \n" +
+                        "${getString(R.string.invoiceItem_total)} :  ${it.emall_price}")
+                .setTitle(R.string.questionEndShopping)
                 .setNeutralButton(R.string.closeDialog) { dialog, _ ->
                     dialog.dismiss()
                 }
@@ -182,7 +183,7 @@ class MapsActivity : BindingActivity<MapBinding>(), OnMapReadyCallback {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_PERMISSION) {

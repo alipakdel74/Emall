@@ -78,7 +78,7 @@ class EditProfileViewModel(private val repo: EditProfileRepository) : BaseViewMo
         _loading.value = true
         launch {
             val res = withContext(Dispatchers.IO) {
-                repo.edit(name, number, email ?: "", address ?: "", password.toInt())
+                repo.edit(name, number, email ?: "", address ?: "", password)
             }
             when (res.status) {
                 BaseResult.Status.ERROR -> _message.value = res.message!!

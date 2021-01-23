@@ -18,6 +18,7 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
     private val vm by viewModel<ShoppingCartViewModel>()
 
     private var isLogin = false
+    private var refreshList = false
 
     override fun getLayoutResId(): Int = R.layout.activity_shopping_cart
 
@@ -39,7 +40,7 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
 
         vm.addPreInvoice.observe(this, {
             if (it) {
-                startActivity(Intent(this, MapsActivity::class.java))
+                startActivity(Intent(this, PreInvoiceActivity::class.java))
                 finish()
             }
         })
@@ -57,8 +58,10 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
                 binding.rclShopping.visibility = View.VISIBLE
                 if (binding.rclShopping.adapter == null)
                     binding.rclShopping.adapter = ShoppingCartAdapter(this, it.details, vm)
-                else
-                    (binding.rclShopping.adapter as ShoppingCartAdapter).refresh(it.details)
+                else {
+                    if (refreshList)
+                        (binding.rclShopping.adapter as ShoppingCartAdapter).refresh(it.details)
+                }
             }
 
         })
@@ -76,6 +79,7 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
             SnackBarBuilder(it).show(this)
         })
         vm.closeCart.observe(this, {
+            refreshList = true
             if (it) vm.shoppingCartDB()
         })
 
@@ -98,8 +102,13 @@ class ShoppingCartActivity : BindingActivity<ShoppingCartBinding>() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == 1006)
-            if (data!!.getBooleanExtra("changeData", false))
+            if (data!!.getBooleanExtra("changeData", false)) {
+                val position = data.getIntExtra("position", -1)
+                val count = data.getIntExtra("count", 1)
+                refreshList = false
                 vm.shoppingCartDB()
+                (binding.rclShopping.adapter as ShoppingCartAdapter).refreshItem(position, count)
+            }
     }
 
 }

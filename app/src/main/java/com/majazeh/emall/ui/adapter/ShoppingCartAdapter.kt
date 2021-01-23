@@ -17,7 +17,7 @@ import com.majazeh.emall.viewmodel.ShoppingCartViewModel
 class ShoppingCartAdapter(
     private val activity: Activity,
     private var models: MutableList<PreInvoice>,
-    private val vm: ShoppingCartViewModel
+    private val vm: ShoppingCartViewModel,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         ShoppingCartHolder(
@@ -49,7 +49,8 @@ class ShoppingCartAdapter(
                     Intent(
                         holder.itemView.context,
                         DetailActivity::class.java
-                    ).putExtra("data", models[position].product), 0
+                    ).putExtra("data", models[position].product)
+                        .putExtra("position", position), 0
                 )
             }
         }
@@ -62,6 +63,11 @@ class ShoppingCartAdapter(
         this.models.clear()
         this.models.addAll(models)
         notifyDataSetChanged()
+    }
+
+    fun refreshItem(position: Int, count:Int) {
+        this.models[position].count = count
+        notifyItemChanged(position)
     }
 
     private class ShoppingCartHolder(view: View) : BindingViewHolder<ItemShoppingCartBinding>(view)

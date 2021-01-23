@@ -120,6 +120,7 @@ class EditProfileActivity : BindingActivity<EditProfileBinding>(), OnMapReadyCal
             if (it.address.isNullOrEmpty())
                 binding.btnChangeAddress.text = getString(R.string.selectAddress)
             else {
+                vm.mAddress.set(it.address)
                 binding.btnChangeAddress.text = getString(R.string.changeAddress)
                 val lat = it.address!!.substring(0, it.address!!.lastIndexOf(","))
                 val lng = it.address!!.substring(it.address!!.indexOf(",") + 1, it.address!!.length)

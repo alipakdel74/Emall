@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PreInvoiceViewModel(private val repo: PreInvoiceRepository): BaseViewModel() {
+class PreInvoiceViewModel(private val repo: PreInvoiceRepository) : BaseViewModel() {
 
     private val _cart = MutableLiveData<ShoppingCart>()
     val cart: LiveData<ShoppingCart> = _cart

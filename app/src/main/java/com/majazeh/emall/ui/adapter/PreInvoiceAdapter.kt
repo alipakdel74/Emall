@@ -47,6 +47,11 @@ class PreInvoiceAdapter(
         notifyDataSetChanged()
     }
 
+    fun removeItem(model: PreInvoice) {
+        this.models.remove(model)
+        notifyDataSetChanged()
+    }
+
     private class PreInvoiceHolder(view: View) : BindingViewHolder<ItemInvoicePreBinding>(view)
 
 }

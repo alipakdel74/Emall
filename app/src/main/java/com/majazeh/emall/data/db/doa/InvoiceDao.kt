@@ -21,10 +21,10 @@ interface InvoiceDao {
     @Query("DELETE FROM tbl_invoice")
     suspend fun deleteAll(): Int
 
-    @Query("SELECT SUM(emall_price) FROM tbl_invoice")
+    @Query("SELECT SUM(emall_price * count) FROM tbl_invoice")
     suspend fun getEmallPrice(): Int?
 
-    @Query("SELECT SUM(market_price) FROM tbl_invoice")
+    @Query("SELECT SUM(market_price * count) FROM tbl_invoice")
     suspend fun getMarketPrice(): Int?
 
     @Query("SELECT SUM(count) FROM tbl_invoice")

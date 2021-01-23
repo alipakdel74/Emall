@@ -24,14 +24,12 @@ class InvoiceDetailAdapter(private val models: MutableList<PreInvoice>) : BaseAd
         val ivShopping: AppCompatImageView = view.findViewById(R.id.ivShopping)
         val txtShoppingCart: AppCompatTextView = view.findViewById(R.id.txtShoppingCart)
         val txtAmount: AppCompatTextView = view.findViewById(R.id.txtAmount)
-        val txtDiscount: AppCompatTextView = view.findViewById(R.id.txtDiscount)
         val txtTotal: AppCompatTextView = view.findViewById(R.id.txtTotal)
 
         ivShopping.loadImage(models[position].product.imageUrl.original)
         txtShoppingCart.text = models[position].product.title
-        txtAmount.text = "تعداد : ${models[position].count}"
-        txtDiscount.text = "تخفیف : ${models[position].discount.toInt()} "
-        txtTotal.text = "مبلغ اصلی بازار : ${models[position].total_market_price} "
+        txtAmount.text = "تعداد : ".plus(models[position].count)
+        txtTotal.text = "مبلغ اصلی بازار : ".plus(models[position].total_market_price)
 
         return view
     }

@@ -57,18 +57,4 @@
         app:layout_constraintTop_toBottomOf="@id/txtAmount"
         tools:text="title" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/txtDiscount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:paddingEnd="8dp"
-        android:paddingStart="8dp"
-        android:textColor="@color/greenColor"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/txtAmount"
-        tools:text="title" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -41,7 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="48dp"
-                android:gravity="center"
+                android:gravity="center|right"
                 android:maxLines="1"
                 android:padding="8dp"
                 android:text="@{item.product.title}"
@@ -94,7 +94,7 @@
                 android:gravity="end"
                 android:padding="8dp"
                 android:text='@{item.emall_price+"دینار"}'
-                android:textColor="@color/greenColor"
+                android:textColor="@color/green"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"

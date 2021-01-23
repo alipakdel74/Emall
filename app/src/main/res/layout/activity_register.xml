@@ -78,12 +78,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
+            android:layout_marginTop="8dp"
             android:layout_marginRight="40dp"
             app:boxBackgroundColor="@color/white"
             app:boxBackgroundMode="filled"
             app:boxCornerRadiusBottomEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"
-            android:layout_marginTop="8dp"
             app:boxCornerRadiusTopEnd="16dp"
             app:boxCornerRadiusTopStart="16dp"
             app:boxStrokeColor="@color/black"
@@ -111,8 +111,8 @@
             android:id="@+id/inputPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="40dp"
+            android:layout_marginTop="8dp"
             android:layout_marginRight="40dp"
             app:boxBackgroundColor="@color/white"
             app:boxBackgroundMode="filled"
@@ -128,7 +128,6 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtPassword"
-                app:onOkInSoftKeyboard="@{() -> vm.register()}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="right|center_vertical"
@@ -138,6 +137,7 @@
                 android:textColor="@color/black"
                 android:textColorHint="@color/medium"
                 android:textSize="14sp"
+                app:onOkInSoftKeyboard="@{() -> vm.register()}"
                 app:textInputLayoutFocusedRectEnabled="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -145,12 +145,15 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
             android:layout_marginTop="16dp"
+            android:layout_marginRight="40dp"
             android:clickable="true"
             android:focusable="true"
             android:onClick="@{() -> vm.register()}"
+            android:padding="12dp"
             android:text="@string/singUp"
             android:textColor="@color/white"
             android:textSize="15sp"

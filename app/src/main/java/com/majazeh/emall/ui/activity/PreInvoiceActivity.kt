@@ -8,6 +8,7 @@ import android.view.View
 import com.ali74.libkot.BindingActivity
 import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.majazeh.emall.R
+import com.majazeh.emall.data.api.response.ShoppingCart
 import com.majazeh.emall.databinding.PreInvoiceBinding
 import com.majazeh.emall.ui.adapter.PreInvoiceAdapter
 import com.majazeh.emall.viewmodel.PreInvoiceViewModel
@@ -16,6 +17,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class PreInvoiceActivity : BindingActivity<PreInvoiceBinding>() {
 
     private val vm by viewModel<PreInvoiceViewModel>()
+
+    private lateinit var shoppingCart: ShoppingCart
 
     override fun getLayoutResId(): Int = R.layout.activity_pre_invoice
 
@@ -36,11 +39,14 @@ class PreInvoiceActivity : BindingActivity<PreInvoiceBinding>() {
             binding.cart = it
             if (it.details.isNullOrEmpty()) {
                 binding.txtNull.visibility = View.VISIBLE
-                binding.cardDetail.visibility = View.GONE
+                binding.linearDetail.visibility = View.GONE
+                binding.btnConfirm.visibility = View.GONE
                 binding.rclInvoice.visibility = View.GONE
             } else {
+                shoppingCart = it
                 binding.txtNull.visibility = View.GONE
-                binding.cardDetail.visibility = View.VISIBLE
+                binding.linearDetail.visibility = View.VISIBLE
+                binding.btnConfirm.visibility = View.VISIBLE
                 binding.rclInvoice.visibility = View.VISIBLE
                 if (binding.rclInvoice.adapter == null)
                     binding.rclInvoice.adapter = PreInvoiceAdapter(this, it.details, vm)
@@ -52,6 +58,12 @@ class PreInvoiceActivity : BindingActivity<PreInvoiceBinding>() {
         vm.closeCart.observe(this, {
             if (it) vm.cart()
         })
+
+        binding.btnConfirm.setOnClickListener {
+            startActivity(Intent(this, MapsActivity::class.java)
+                .putExtra("data", shoppingCart))
+            finish()
+        }
 
     }
 

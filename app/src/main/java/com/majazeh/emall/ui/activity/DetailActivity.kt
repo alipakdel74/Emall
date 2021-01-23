@@ -121,6 +121,8 @@ class DetailActivity : BindingActivity<DetailBinding>() {
         if (changeData) {
             val intent = Intent()
             intent.putExtra("changeData", changeData)
+            intent.putExtra("position", this.intent.getIntExtra("position",-1))
+            intent.putExtra("count", count)
             setResult(1006, intent)
         }
         super.onBackPressed()

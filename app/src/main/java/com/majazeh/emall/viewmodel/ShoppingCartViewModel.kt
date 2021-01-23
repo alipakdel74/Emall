@@ -115,7 +115,9 @@ class ShoppingCartViewModel(private val repo: ShoppingCartRepository) : BaseView
                     addCart(it.id, it.count)
                 }
             }
-            _addPreInvoice.value = true
+            if (res.isNullOrEmpty())
+                _addPreInvoice.value = true
+            else addPreInvoice()
             _loading.value = false
         }
     }

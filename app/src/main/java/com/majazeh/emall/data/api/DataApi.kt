@@ -11,7 +11,7 @@ interface DataApi {
     @POST("login")
     suspend fun login(
         @Field("username") number: String,
-        @Field("password") password: String
+        @Field("password") password: String,
     ): Response<Login>
 
     @GET("explode")
@@ -23,7 +23,7 @@ interface DataApi {
         @Query("page") page: Int,
         @Query("q") q: String,
         @Query("category") category: Int,
-        @Query("brand") brand: String
+        @Query("brand") brand: String,
     ): Response<ProductData>
 
     @GET("logout")
@@ -37,7 +37,7 @@ interface DataApi {
         @Field("number") number: String,
         @Field("email") email: String,
         @Field("address") address: String,
-        @Field("password") password: Int
+        @Field("password") password: String,
     ): Response<EditMe>
 
     @FormUrlEncoded
@@ -46,7 +46,7 @@ interface DataApi {
         @Field("name") name: String,
         @Field("number") number: String,
         @Field("email") email: String,
-        @Field("password") password: String
+        @Field("password") password: String,
     ): Response<Login>
 
     @FormUrlEncoded
@@ -54,20 +54,20 @@ interface DataApi {
     suspend fun addCart(
         @Header("Authorization") Authorization: String,
         @Field("product_id") product_id: String,
-        @Field("count") count: Int
+        @Field("count") count: Int,
     ): Response<ResponseApi>
 
     @DELETE("cart/details/{id}")
     suspend fun deleteCart(
         @Header("Authorization") Authorization: String,
-        @Path("id") id: String
+        @Path("id") id: String,
     ): Response<ResponseApi>
 
     @FormUrlEncoded
     @POST("cart/close")
     suspend fun closeCart(
         @Header("Authorization") Authorization: String,
-        @Field("location") location: String
+        @Field("location") location: String,
     ): Response<ResponseApi>
 
     @GET("cart")
@@ -76,22 +76,21 @@ interface DataApi {
     @GET("invoices")
     suspend fun invoices(
         @Header("Authorization") Authorization: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
     ): Response<InvoiceData>
 
     @GET("invoices/{invoice_id}")
     suspend fun invoiceDetailShow(
         @Header("Authorization") Authorization: String,
-        @Path("invoice_id") invoice_id: String
+        @Path("invoice_id") invoice_id: String,
     ): Response<ShoppingCartData>
-
 
     @FormUrlEncoded
     @POST("requests")
     suspend fun requests(
         @Header("Authorization") Authorization: String,
         @Field("title") title: String,
-        @Field("description") description: String
+        @Field("description") description: String,
     ): Response<ResponseApi>
 
 }

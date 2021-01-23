@@ -56,10 +56,11 @@
     <string name="invoiceItem_discount">تخفیف</string>
     <string name="invoiceItem_total">مجموع</string>
     <string name="invoiceItem_date">تاریخ</string>
-    <string name="questionEndShopp">آیا از نهایی کردن خرید خود اطمینان دارید؟</string>
+    <string name="questionEndShopping">نهایی کردن خرید</string>
     <string name="messageEndShopping">خرید شما انجام شد. با شما تماس میگیریم</string>
     <string name="changeAddress">تغییر آدرس</string>
     <string name="selectAddress">انتخاب آدرس</string>
     <string name="edit">ویرایش</string>
+    <string name="endBuy">نهایی کردن خرید</string>
 
 </resources>

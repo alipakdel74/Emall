@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.majazeh.emall">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -15,7 +14,7 @@
 
     <application
         android:name=".Emall"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -25,6 +24,9 @@
         tools:ignore="AllowBackup,UnusedAttribute"
         tools:replace="android:supportsRtl">
 
+        <meta-data
+            android:name="io.sentry.dsn"
+            android:value="https://b3069348bb4a4f5ab6d35d7fb0e0d4b9@o509648.ingest.sentry.io/5604476" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -97,6 +99,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.ali74.libkot.ui.DefaultErrorActivity"
+            android:process=":error_activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+        <provider
+            android:name="com.ali74.libkot.crashlytics.CrashInitProvider"
+            android:authorities="${applicationId}.crashInitProvider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:initOrder="101" />
     </application>
 
 </manifest>
