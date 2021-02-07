@@ -7,6 +7,7 @@ import com.ali74.libkot.core.BaseViewModel
 import com.majazeh.emall.R
 import com.majazeh.emall.data.api.response.PreInvoice
 import com.majazeh.emall.data.api.response.Product
+import com.majazeh.emall.pattern.ExplodeSingleton
 import com.majazeh.emall.repository.DetailRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,11 +24,23 @@ class DetailViewModel(private val repo: DetailRepository) : BaseViewModel() {
     private val _addCart = MutableLiveData<Boolean>()
     val addCart: LiveData<Boolean> = _addCart
 
+    private val _gotoLogin = MutableLiveData<Boolean>()
+    val gotoLogin: LiveData<Boolean> = _gotoLogin
+
+    private val data = ExplodeSingleton.getInstance()
+
     fun countProduct(count: Int) {
         _count.value = count
     }
 
     fun addCart(id: String, count: Int) {
+        data?.explode?.apply {
+            if (!version.login) {
+                _gotoLogin.value = true
+                return
+            }
+        }
+
         _loading.value = true
         launch {
             val res = withContext(Dispatchers.IO) {

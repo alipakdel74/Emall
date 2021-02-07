@@ -17,4 +17,7 @@ class MainRepository(private var api: DataApi, private val dao: InvoiceDao) : Ba
     suspend fun addProductDB(invoice: PreInvoice) = dao.updateOrAdd(InvoiceDB.to(invoice), true)
     suspend fun request(title: String, desc: String) =
         getResult { api.requests(AppPreferences.auth, title, desc) }
+
+    suspend fun addProduct(id: String, count: String) =
+        getResult { api.addCart(AppPreferences.auth, id, count) }
 }

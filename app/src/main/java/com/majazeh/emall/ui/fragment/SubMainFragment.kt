@@ -1,5 +1,6 @@
 package com.majazeh.emall.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
@@ -9,6 +10,7 @@ import com.ali74.libkot.patternBuilder.SnackBarBuilder
 import com.ali74.libkot.recyclerview.EndlessRVScroll
 import com.majazeh.emall.R
 import com.majazeh.emall.databinding.SubMainBinding
+import com.majazeh.emall.ui.activity.LoginActivity
 import com.majazeh.emall.ui.adapter.ProductAdapter
 import com.majazeh.emall.viewmodel.MainViewModel
 import com.ogaclejapan.smarttablayout.utils.v4.Bundler
@@ -88,6 +90,17 @@ class SubMainFragment : BindingFragment<SubMainBinding>() {
         })
         vm.counterProduct.observe(this, {
             addToBasket.onclick(it)
+        })
+        vm.gotoLogin.observe(this, {
+            if (it) {
+                SnackBarBuilder(getString(R.string.invalidLogin))
+                    .setDuration(3000)
+                    .setActionText(getString(R.string.signIn), R.color.primaryColor)
+                    .setAction {
+                        startActivity(Intent(context, LoginActivity::class.java))
+                    }
+                    .show(requireActivity())
+            }
         })
     }
 

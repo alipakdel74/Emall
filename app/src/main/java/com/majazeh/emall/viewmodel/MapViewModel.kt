@@ -52,9 +52,18 @@ class MapViewModel(private val repo: MapRepository) : BaseViewModel() {
                     _closeCart.value = is_ok
                     if (!is_ok)
                         _message.value = message_text
+                    else clearDB()
                 }
             }
             _loading.value = false
+        }
+    }
+
+    private fun clearDB() {
+        launch {
+            withContext(Dispatchers.IO) {
+                repo.clearDB()
+            }
         }
     }
 }

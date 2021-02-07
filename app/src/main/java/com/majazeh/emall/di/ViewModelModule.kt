@@ -28,7 +28,7 @@ val repositoryModule = module {
     single { EditProfileRepository(get()) }
     single { DetailRepository(get(), get()) }
     single { InvoiceRepository(get()) }
-    single { MapRepository(get()) }
-    single { PreInvoiceRepository(get()) }
+    single { MapRepository(get(),get()) }
+    single { PreInvoiceRepository(get(),get()) }
 }
 

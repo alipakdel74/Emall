@@ -43,12 +43,18 @@ interface InvoiceDao {
     suspend fun update(id: String, count: Int): Int
 
     @Transaction
-    suspend fun updateOrAdd(invoiceDB: InvoiceDB, isList: Boolean = false) {
-        if (productData(invoiceDB.id) == null)
+    suspend fun updateOrAdd(invoiceDB: InvoiceDB, isList: Boolean = false): Int {
+        if (productData(invoiceDB.id) == null) {
             setInvoice(invoiceDB)
-        else {
-            if (isList) updateCountList(invoiceDB.id)
-            else update(invoiceDB.id, invoiceDB.count)
+            return 1
+        } else {
+            return if (isList) {
+                updateCountList(invoiceDB.id)
+                productData(invoiceDB.id)?.count ?: 1
+            } else {
+                update(invoiceDB.id, invoiceDB.count)
+                1
+            }
         }
     }
 

@@ -47,6 +47,12 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
     private val _counterProduct = MutableLiveData<Int>()
     val counterProduct: LiveData<Int> = _counterProduct
 
+    private val _addCart = MutableLiveData<Boolean>()
+    val addCart: LiveData<Boolean> = _addCart
+
+    private val _gotoLogin = MutableLiveData<Boolean>()
+    val gotoLogin: LiveData<Boolean> = _gotoLogin
+
     private val data = ExplodeSingleton.getInstance()
 
     init {
@@ -130,6 +136,13 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
     }
 
     fun addCart(product: Product) {
+        data?.explode?.apply {
+            if (!version.login) {
+                _gotoLogin.value = true
+                return
+            }
+        }
+
         val invoice = PreInvoice(
             product.id,
             "",
@@ -142,21 +155,35 @@ class MainViewModel(private var repo: MainRepository) : BaseViewModel() {
             product.discount
         )
         _loading.value = true
-        try {
-            launch {
-                withContext(Dispatchers.IO) {
-                    repo.addProductDB(invoice)
-                }
-                _loading.value = false
-                _toast.value = R.string.messageAddToCart
-
-                getCountAll()
+        launch {
+            val count = withContext(Dispatchers.IO) {
+                repo.addProductDB(invoice)
             }
-        } catch (e: Exception) {
             _loading.value = false
-            _message.value = e.message!!
+            _toast.value = R.string.messageAddToCart
+
+            getCountAll()
+
+            addCart(product.id, count.toString())
         }
 
+    }
+
+    fun addCart(id: String, count: String) {
+        _loading.value = true
+        launch {
+            val res = withContext(Dispatchers.IO) {
+                repo.addProduct(id, count)
+            }
+            when (res.status) {
+                BaseResult.Status.ERROR -> _message.value = res.message!!
+                BaseResult.Status.SUCCESS -> res.data?.apply {
+                    if (!is_ok) _message.value = message_text
+                    else _addCart.value = is_ok
+                }
+            }
+            _loading.value = false
+        }
     }
 
     fun getCountAll() {

@@ -62,10 +62,19 @@ class DetailActivity : BindingActivity<DetailBinding>() {
         }
 
         binding.btnAddToCart.setOnClickListener {
-            if (intent.hasExtra("preInvoice"))
+//            if (intent.hasExtra("preInvoice"))
+//                vm.addCart(preInvoice?.product?.id ?: "", count)
+//            else
+//                vm.addCartDB(product!!, count)
+//            changeData = true
+
+            if (intent.hasExtra("preInvoice")) {
                 vm.addCart(preInvoice?.product?.id ?: "", count)
-            else
+                vm.addCartDB(preInvoice?.product!!, count)
+            } else {
+                vm.addCart(product?.id ?: "", count)
                 vm.addCartDB(product!!, count)
+            }
             changeData = true
         }
         binding.ivShare.setOnClickListener {
@@ -96,6 +105,18 @@ class DetailActivity : BindingActivity<DetailBinding>() {
         vm.addCart.observe(this, {
             if (it) onBackPressed()
         })
+
+        vm.gotoLogin.observe(this, {
+            if (it) {
+                SnackBarBuilder(getString(R.string.invalidLogin))
+                    .setDuration(3000)
+                    .setActionText(getString(R.string.signIn), R.color.primaryColor)
+                    .setAction {
+                        startActivity(Intent(this, LoginActivity::class.java))
+                    }
+                    .show(this)
+            }
+        })
     }
 
     private fun getBitmapFromView(): Uri? {
@@ -121,7 +142,7 @@ class DetailActivity : BindingActivity<DetailBinding>() {
         if (changeData) {
             val intent = Intent()
             intent.putExtra("changeData", changeData)
-            intent.putExtra("position", this.intent.getIntExtra("position",-1))
+            intent.putExtra("position", this.intent.getIntExtra("position", -1))
             intent.putExtra("count", count)
             setResult(1006, intent)
         }

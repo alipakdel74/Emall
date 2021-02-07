@@ -36,7 +36,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : BindingActivity<MainBinding>() {
 
     private val vm by viewModel<MainViewModel>()
-    private var pageactionSearch = 1
+    private var paginationSearch = 1
     private var adapter: ProductAdapter? = null
     private val profileDialog by lazy { MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme) }
 
@@ -49,7 +49,8 @@ class MainActivity : BindingActivity<MainBinding>() {
         setSupportActionBar(binding.appBarMain.toolbar)
 
         binding.appBarMain.fab.setOnClickListener {
-            startActivity(Intent(this, ShoppingCartActivity::class.java))
+//            startActivity(Intent(this, ShoppingCartActivity::class.java))
+            startActivity(Intent(this, PreInvoiceActivity::class.java))
         }
 
         binding.appBarMain.toolbar.setNavigationOnClickListener {
@@ -105,10 +106,12 @@ class MainActivity : BindingActivity<MainBinding>() {
             if (it) {
                 binding.navView.menu.findItem(R.id.nav_user).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_invoice).isVisible = true
-                binding.navView.menu.findItem(R.id.nav_preInvoice).isVisible = true
+//                binding.navView.menu.findItem(R.id.nav_preInvoice).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_exit).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_profile).isVisible = true
+                binding.appBarMain.fab.visibility = View.VISIBLE
             } else {
+                binding.appBarMain.fab.visibility = View.GONE
                 binding.navView.menu.findItem(R.id.nav_user).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_invoice).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_preInvoice).isVisible = false
@@ -191,7 +194,7 @@ class MainActivity : BindingActivity<MainBinding>() {
             }
             exitReveal(binding.appBarMain.constrainSearch)
             binding.appBarMain.rclSearch.adapter = null
-            pageactionSearch = 1
+            paginationSearch = 1
         }
 
         binding.appBarMain.edtSearch.setOnEditorActionListener { _, actionId, _ ->
@@ -203,14 +206,14 @@ class MainActivity : BindingActivity<MainBinding>() {
         binding.appBarMain.ivSearch.setOnClickListener {
             if (binding.appBarMain.edtSearch.text.toString().trim().isEmpty())
                 return@setOnClickListener
-            pageactionSearch = 1
+            paginationSearch = 1
             binding.appBarMain.rclSearch.adapter = null
             vm.getProductSearch(1, binding.appBarMain.edtSearch.text.toString().trim(), 0, "")
         }
 
         vm.productsDataSearch.observe(this, {
             hideKeyboard(this)
-            if (pageactionSearch == 1) {
+            if (paginationSearch == 1) {
 
                 if (it.data.isNullOrEmpty())
                     binding.appBarMain.txtNullSearch.visibility = View.VISIBLE
@@ -236,9 +239,9 @@ class MainActivity : BindingActivity<MainBinding>() {
         binding.appBarMain.rclSearch.addOnScrollListener(object : EndlessRVScroll(manager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
                 binding.appBarMain.prbLazyLoad.visibility = View.VISIBLE
-                pageactionSearch = page + 1
+                paginationSearch = page + 1
                 vm.getProductSearch(
-                    pageactionSearch,
+                    paginationSearch,
                     binding.appBarMain.edtSearch.text.toString().trim(),
                     0,
                     ""
